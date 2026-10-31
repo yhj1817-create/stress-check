@@ -1,0 +1,1286 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>직무스트레스 4단계 점검</title>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500;600;700&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 교육생 휴대폰용 단일 컬럼(최대 780px). 상단 고정 STEP 표시줄 + 단계별 카드. 안전블루(DISC 원본) 계열을 공통 디자인으로 사용 */
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#EEF3F9; --surface:#FFFFFF; --surface-2:#F4F7FB; --ink:#0E1E35; --muted:#55657C; --line:#D3DDEA;
+  --accent:#1B5BB8; --accent-strong:#0B3D8C; --accent-soft:#E2ECFA; --on-accent:#FFFFFF;
+  --warn:#B4441F; --warn-soft:#FBE7DD; --mid:#A8780C; --mid-soft:#FBF1D6; --ok:#23784A; --ok-soft:#E2F1E3;
+  --d:#C4402F; --i:#C98A06; --s:#23874F; --c:#2563C9;
+  --band:#F3F6FB; --band-2:#FFFFFF;
+  --font-display:"IBM Plex Sans KR","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --font-body:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C1524; --surface:#132036; --surface-2:#182842; --ink:#E8EEF7; --muted:#9DB0C9; --line:#2A3D5C;
+  --accent:#5D9BF0; --accent-strong:#8BB8F7; --accent-soft:#1B3358; --on-accent:#0A1424;
+  --warn:#F0916C; --warn-soft:#3A2119; --mid:#E9B949; --mid-soft:#3A2F14; --ok:#5BC48A; --ok-soft:#16352A;
+  --d:#EE7A6B; --i:#F0BC4A; --s:#5CC98B; --c:#6FA2F2;
+  --band:#16253D; --band-2:#132036; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0C1524; --surface:#132036; --surface-2:#182842; --ink:#E8EEF7; --muted:#9DB0C9; --line:#2A3D5C;
+  --accent:#5D9BF0; --accent-strong:#8BB8F7; --accent-soft:#1B3358; --on-accent:#0A1424;
+  --warn:#F0916C; --warn-soft:#3A2119; --mid:#E9B949; --mid-soft:#3A2F14; --ok:#5BC48A; --ok-soft:#16352A;
+  --d:#EE7A6B; --i:#F0BC4A; --s:#5CC98B; --c:#6FA2F2;
+  --band:#16253D; --band-2:#132036; color-scheme:dark;}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-padding-top:90px}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.6;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.3;margin:0}
+h1{font-size:clamp(1.6rem,5vw,2.2rem);font-weight:700}
+h2{font-size:1.3rem;font-weight:700}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+ul{margin:0;padding-left:1.15em}
+li+li{margin-top:4px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:3px solid var(--accent)}
+.top-in{max-width:780px;margin:0 auto;padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:6px}
+.top-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.8rem;color:var(--muted)}
+.top-row b{color:var(--accent-strong)}
+.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.stp{font:inherit;font-family:var(--font-display);font-size:.78rem;font-weight:600;line-height:1.25;min-height:44px;padding:4px 6px;border-radius:8px;border:1.5px solid var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer;text-align:left;display:flex;flex-direction:column;justify-content:center}
+.stp small{font-weight:500;font-size:.72rem}
+.stp.done{border-color:var(--accent);color:var(--accent-strong)}
+.stp.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.stp:disabled{opacity:.55;cursor:not-allowed}
+.wrap{max-width:780px;margin:0 auto;padding-block:18px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.kicker{font-size:.8rem;letter-spacing:.06em;color:var(--muted);font-weight:500}
+.q-big{font-family:var(--font-display);font-weight:600;color:var(--accent-strong)}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.btn{font:inherit;font-family:var(--font-display);font-weight:600;font-size:1.02rem;min-height:52px;padding:10px 20px;border-radius:10px;border:2px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent-strong)}
+a.btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;box-sizing:border-box}
+.steps4 .later{opacity:.5}
+.steps4 .later span::after{content:" · 다음 QR"}
+.codebox{display:flex;flex-direction:column;gap:8px}
+.codebox .code{font-family:var(--f-num,monospace);font-size:14px;background:var(--band,transparent);border:1px dashed var(--accent);border-radius:8px;padding:10px;word-break:break-all;user-select:all;margin:0}
+.codein{font:inherit;font-family:var(--f-num,monospace);color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;min-height:48px;padding:8px 12px;width:100%;box-sizing:border-box;text-transform:uppercase}
+.loaded{border-left:4px solid var(--ok);padding:8px 12px;background:var(--ok-soft);border-radius:8px}
+.qrgrid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.qrbox{background:#fff;border-radius:12px;padding:10px;width:100%;max-width:260px;margin:0 auto;box-sizing:border-box}
+.qrbox svg{width:100%;height:auto;display:block}
+.qrurl{font-size:12px;color:var(--muted);word-break:break-all;margin:0}
+.qrfull{position:fixed;inset:0;z-index:60;background:#fff;color:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;text-align:center}
+.qrfull h2{color:#111;font-size:clamp(1.4rem,4vw,2.4rem);margin:0}
+.qrfull .qrbox{max-width:min(70vh,88vw)}
+.qrfull button{font:inherit;font-weight:600;min-height:48px;padding:8px 22px;border-radius:10px;border:2px solid #1B5BB8;background:#fff;color:#1B5BB8}
+.linkish{font:inherit;background:none;border:0;padding:0;color:var(--accent-strong);text-decoration:underline;cursor:pointer}
+.dctbl td{vertical-align:middle}
+.dcin{font:inherit;font-family:var(--f-num,monospace);font-size:1.15rem;text-align:center;width:4.2em;min-height:48px;padding:6px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;box-sizing:border-box}
+.dcin:focus{outline:3px solid var(--accent);outline-offset:1px}
+.dcin.bad{border-color:var(--warn)}
+.sum-ok{color:var(--ok)!important;font-weight:700}
+.sum-ok::after{content:" ✓"}
+.dcin{-moz-appearance:textfield;appearance:textfield}
+.dcin::-webkit-outer-spin-button,.dcin::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.chg-up{color:var(--warn);font-weight:700}
+.chg-dn{color:var(--ok);font-weight:700}
+.legend .old{background:none;border:2px dashed var(--muted)}
+
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,.pick:focus-visible,.jump:focus-visible,.stp:focus-visible,.tab:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.row .btn{flex:1 1 180px}
+.steps4{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;counter-reset:s}
+.steps4 div{background:var(--surface-2);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.steps4 b{font-family:var(--font-display);color:var(--accent-strong)}
+.steps4 span{font-size:.88rem;color:var(--muted)}
+.steps4 em{font-style:normal;font-size:.92rem;font-weight:500}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+legend{font-weight:600;padding:0;margin-bottom:4px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg label,.opt label{position:relative}
+.seg input,.opt input{position:absolute;opacity:0;inset:0;margin:0}
+.seg span{display:flex;align-items:center;justify-content:center;text-align:center;min-height:52px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;background:var(--surface-2);font-weight:500;cursor:pointer}
+.seg input:checked+span,.opt input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.seg input:focus-visible+span,.opt input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+input[type=date],textarea{font:inherit;width:100%;min-height:50px;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink)}
+textarea{min-height:64px;resize:vertical}
+.err{color:var(--warn);font-size:.88rem;font-weight:500}
+.notice{background:var(--accent-soft);border-radius:10px;padding:12px 16px;font-size:.92rem}
+.alert{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:12px 16px;font-weight:500}
+.disclaim{border-left:4px solid var(--accent);padding:10px 14px;background:var(--surface-2);border-radius:0 10px 10px 0;font-size:.92rem}
+/* KOSS 문항 */
+.q{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--surface);gap:10px}
+.q.missing{border-color:var(--warn);background:var(--warn-soft)}
+.q-head{display:flex;gap:10px;align-items:flex-start;float:left;width:100%;padding:0;margin:0 0 10px}
+.q .opt,.q .q-miss{clear:both}
+.q-no{font-family:var(--font-mono);font-weight:500;color:var(--accent-strong);flex:none;padding-top:1px}
+.q-dom{display:block;font-size:.76rem;color:var(--muted);font-weight:500;letter-spacing:.03em}
+.opt{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.opt span{display:flex;align-items:center;justify-content:center;text-align:center;min-height:52px;padding:4px;border:2px solid var(--line);border-radius:10px;background:var(--surface-2);font-size:.86rem;line-height:1.3;cursor:pointer}
+.q-miss{display:none;color:var(--warn);font-size:.86rem;font-weight:500}
+.q.missing .q-miss{display:block}
+.bar{flex:1;height:10px;background:var(--line);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .25s}
+.prog{display:flex;align-items:center;gap:12px}
+.prog b{font-family:var(--font-display);font-variant-numeric:tabular-nums;min-width:4.5em;text-align:right}
+/* DISC 문항 */
+.qhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.qnum{font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--accent-strong);font-variant-numeric:tabular-nums}
+.words{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center}
+.words .h{font-size:.82rem;color:var(--muted);text-align:center;letter-spacing:.03em}
+.word{font-size:1.2rem;font-weight:500;padding:6px 0;min-width:0}
+.pick{font:inherit;font-family:var(--font-display);font-weight:600;min-width:80px;min-height:52px;padding:6px 10px;border-radius:10px;border:2px solid var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer;font-size:1rem}
+.pick.most.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.pick.least.on{background:var(--warn);border-color:var(--warn);color:var(--surface)}
+.wordrow-sep{grid-column:1/-1;border-top:1px solid var(--line)}
+.grid28{display:grid;grid-template-columns:repeat(14,1fr);gap:5px}
+.jump{font:inherit;font-size:.8rem;font-variant-numeric:tabular-nums;min-height:34px;padding:0;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.jump.done{background:var(--accent-soft);color:var(--accent-strong);border-color:transparent;font-weight:700}
+.jump.cur{outline:2px solid var(--accent);outline-offset:1px}
+.jump.miss{border-color:var(--warn);color:var(--warn);font-weight:700}
+/* 결과 공통 */
+.pill{display:inline-block;font-size:.76rem;font-weight:700;padding:2px 9px;border-radius:999px;vertical-align:middle;white-space:nowrap}
+.pill.hi{background:var(--warn-soft);color:var(--warn)}
+.pill.mid{background:var(--mid-soft);color:var(--mid)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.score-hero{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.ring{width:108px;height:108px;flex:none}
+.ring text{fill:var(--ink);font-family:var(--font-display)}
+.score-hero .t{flex:1;min-width:200px;display:flex;flex-direction:column;gap:6px}
+#radar{width:100%;height:auto;display:block;max-width:560px;margin:0 auto}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.82rem;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.dom{display:flex;flex-direction:column;gap:12px}
+.dom-row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+.dom-row .nm{font-weight:600}
+.dom-row .val{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.zones{grid-column:1/-1;position:relative;display:flex;height:10px;border-radius:999px;overflow:hidden}
+.zones i{display:block;height:100%}
+.z-ok{background:var(--ok-soft)} .z-mid{background:var(--mid-soft)} .z-hi{background:var(--warn-soft)}
+.zones b{position:absolute;top:-2px;width:4px;height:14px;margin-left:-2px;background:var(--ink);border-radius:2px}
+.dom-row .desc{grid-column:1/-1;font-size:.84rem;color:var(--muted)}
+.hero{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+.badge{font-family:var(--font-display);font-weight:700;font-size:2.4rem;line-height:1;min-width:84px;height:84px;padding:0 14px;border-radius:16px;display:grid;place-items:center;color:#fff}
+.hero .t{flex:1;min-width:200px;display:flex;flex-direction:column;gap:4px}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+th{font-size:.84rem;color:var(--muted);font-weight:500}
+td.type{font-family:var(--font-display);font-weight:700;text-align:left;white-space:nowrap}
+td.type .tn{font-weight:500;color:var(--muted);font-size:.9em}
+tr.top td{background:var(--accent-soft)}
+.dotc{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+svg text{font-family:var(--font-body)}
+.sec{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.sec>div{background:var(--surface-2);border-radius:10px;padding:14px 16px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.sec h3{font-size:.98rem}
+.sec .wide{grid-column:1/-1}
+.typeblock{display:flex;flex-direction:column;gap:12px}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--surface)}
+details>summary{cursor:pointer;font-family:var(--font-display);font-weight:600;color:var(--accent-strong);min-height:32px;display:flex;align-items:center}
+details[open]>summary{margin-bottom:10px}
+/* STEP 3 */
+.map{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch}
+.map>div{background:var(--surface-2);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.map .x{display:grid;place-items:center;font-family:var(--font-display);font-size:1.4rem;color:var(--muted);background:none;padding:0}
+.picks{display:flex;flex-direction:column;gap:8px}
+.pickgrp{display:flex;flex-direction:column;gap:6px}
+.pickgrp h3{font-size:.92rem;color:var(--muted);font-weight:600}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);cursor:pointer}
+.chk input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--accent)}
+.chk.on{border-color:var(--accent);background:var(--accent-soft)}
+.chk .tag{font-size:.74rem;font-weight:700;color:var(--muted);display:block}
+.actcard{border:2px dashed var(--accent);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.actcard ol{margin:0;padding-left:1.3em}
+.plan{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px}
+.plan li{display:grid;grid-template-columns:8.5em 1fr;gap:4px 12px;padding:10px 12px;background:var(--surface-2);border-radius:10px;margin:0}
+.plan .pd{font-family:var(--font-mono);font-size:.84rem;color:var(--accent-strong);font-weight:500}
+.plan .how{grid-column:2;font-size:.84rem;color:var(--muted)}
+.who{font-weight:700;font-size:.9rem;margin-top:4px}
+.goal{padding-left:1.15em}
+.prog6{display:flex;flex-direction:column;gap:12px}
+.prog6 .st{display:grid;grid-template-columns:28px 1fr;gap:10px}
+.prog6 .no{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-weight:700;font-size:.85rem}
+.prog6 .stage{font-size:.78rem;color:var(--accent-strong);font-weight:700}
+.prog6 .body{display:flex;flex-direction:column;gap:4px;min-width:0}
+.note{font-size:.86rem;color:var(--muted)}
+/* STEP 4 */
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:inherit;font-family:var(--font-display);font-weight:600;min-height:46px;padding:6px 16px;border-radius:999px;border:2px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.tab.on{color:var(--ink);border-color:currentColor;background:var(--surface-2)}
+.types4{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.types4>div{border-radius:10px;padding:12px 14px;background:var(--surface-2);border-top:4px solid var(--line);display:flex;flex-direction:column;gap:4px;min-width:0}
+.types4 b{font-family:var(--font-display)}
+.types4 .mine{font-size:.74rem;font-weight:700;color:var(--accent-strong)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pair>div{background:var(--surface-2);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.six{counter-reset:k;list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.six li{counter-increment:k;margin:0;display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--surface-2);border-radius:10px}
+.six li::before{content:counter(k);flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-size:.8rem;font-weight:700}
+.memo{display:flex;flex-direction:column;gap:10px}
+.memo label{font-weight:600;font-size:.94rem}
+.help{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.92rem}
+.help b{font-family:var(--font-mono);color:var(--accent-strong)}
+.class-act{background:var(--accent-soft);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.sum{display:flex;flex-direction:column;gap:6px}
+.sample-flag{background:var(--mid-soft);color:var(--mid);border-radius:10px;padding:10px 14px;font-weight:600;font-size:.9rem}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:10px;font-weight:500;z-index:40;max-width:calc(100% - 32px)}
+@media (max-width:560px){
+  .card{padding:16px}
+  .grid28{grid-template-columns:repeat(7,1fr)}
+  .pick{min-width:64px}
+  .word{font-size:1.08rem}
+  .opt{grid-template-columns:1fr 1fr}
+  .map{grid-template-columns:1fr}
+  .map .x{padding:0;font-size:1.1rem}
+  .pair{grid-template-columns:1fr}
+  .plan li{grid-template-columns:1fr}
+  .plan .how{grid-column:1}
+  th,td{padding:8px 4px}
+  td.type .tn{display:none}
+  .badge{min-width:70px;height:70px;font-size:2rem}
+  .stp small{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+#report{position:fixed;left:-10000px;top:0;width:760px;background:#fff;color:#1c2a33;font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:13px;line-height:1.55}
+#report .rb{padding:10px 18px;background:#fff}
+#report h1{font-size:22px;margin:2px 0 4px;color:#0B3D8C}
+#report h2{font-size:16px;margin:6px 0 6px;color:#0B3D8C;border-bottom:2px solid #1B5BB8;padding-bottom:4px}
+#report .sub{color:#5b6b72;font-size:11.5px}
+#report .h{font-weight:700;margin-top:8px;color:#0B3D8C}
+#report ul,#report ol{margin:2px 0;padding-left:1.3em}
+#report .t{width:100%;border-collapse:collapse;margin-top:6px}
+#report .t th,#report .t td{border:1px solid #c9d3cf;padding:5px 7px;text-align:left;vertical-align:top;font-size:12px}
+#report .t th{background:#eef3f9;font-weight:700}
+#report .t.c td,#report .t.c th{text-align:center}
+#report .t td.l{text-align:left}
+#report .two{display:flex;gap:14px}
+#report .two>div{flex:1;min-width:0}
+#report .two svg{width:100%;height:auto}
+#report .memo{white-space:pre-wrap;border:1px solid #c9d3cf;border-radius:6px;padding:6px 8px;min-height:30px}
+@media print{
+  body{background:#fff;color:#000;font-size:12px}
+  .top,.noprint{display:none!important}
+  .card{break-inside:avoid;border:1px solid #bbb}
+}
+</style>
+</head>
+<body>
+
+
+<header class="top" id="top">
+  <div class="top-in">
+    <div class="top-row"><span><b>산업안전보건교육</b> · <span id="topLabel">직무스트레스의 관리</span></span><span id="topNote">점검일 -</span></div>
+    <nav class="stepper" aria-label="진행 단계">
+      <button class="stp" type="button" id="nav1" data-go="s1"><span>STEP 1</span><small>직무스트레스 확인</small></button>
+      <button class="stp" type="button" id="nav2" data-go="s2"><span>STEP 2</span><small>스트레스 반응 이해</small></button>
+      <button class="stp" type="button" id="nav3" data-go="s3"><span>STEP 3</span><small>관리방법 찾기</small></button>
+      <button class="stp" type="button" id="nav4" data-go="s4"><span>STEP 4</span><small>동료 이해하기</small></button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+<div class="toast" id="toast" role="status" hidden></div>
+<div id="report" aria-hidden="true"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+(function(){
+"use strict";
+/* ================================================================
+   공통 상태 (sessionStorage: 탭을 닫으면 지워짐 · 외부 전송 없음)
+   ================================================================ */
+/* 링크별 모드: ?m=12 (STEP 1·2 수업용), ?m=34 (STEP 3·4 수업용), ?m=re (4주 후 재진단), ?m=qr (강사용 QR). 없으면 전체 */
+const MODE=(()=>{let q="";try{q=new URLSearchParams(location.search).get("m")||""}catch(e){}if(!q)q=(location.hash||"").replace(/^#/,"");q=String(q).toLowerCase();return({"12":"12","34":"34","re":"re","qr":"qr"})[q]||"all"})();
+const IN_FRAME=(()=>{try{return window.self!==window.top}catch(e){return true}})();
+const KEY=MODE==="re"?"stress-platform-re-v1":"stress-platform-v1";
+/* 다음 QR·재진단으로 넘기는 결과 (이 기기 브라우저에만 보관, 전송 없음) */
+const CKEY="stress-platform-carry-v1";
+function carryGet(){try{return JSON.parse(localStorage.getItem(CKEY)||"null")||{}}catch(e){return{}}}
+function carrySet(o){try{localStorage.setItem(CKEY,JSON.stringify(o))}catch(e){}}
+function carryClear(){try{localStorage.removeItem(CKEY)}catch(e){}}
+function linkFor(m){const b=location.href.split(/[?#]/)[0];return IN_FRAME?"#"+m:b+"?m="+m}
+window.addEventListener("hashchange",()=>{if(!new URLSearchParams(location.search).get("m"))location.reload()});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function todayKST(){return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}
+function addDays(iso,n){const[y,m,d]=iso.split("-").map(Number);const t=new Date(Date.UTC(y,m-1,d+n));return t.getUTCFullYear()+"-"+String(t.getUTCMonth()+1).padStart(2,"0")+"-"+String(t.getUTCDate()).padStart(2,"0")}
+function fmtD(iso){const[y,m,d]=iso.split("-").map(Number);const w="일월화수목금토"[new Date(Date.UTC(y,m-1,d)).getUTCDay()];return m+"/"+d+"("+w+")"}
+function fresh(){return{view:"home",gender:"",role:"",date:todayKST(),kAns:Array(26).fill(0),kPage:1,dc:{most:{D:"",I:"",S:"",C:"",N:""},least:{D:"",I:"",S:"",C:"",N:""}},picks:[],memo:["","",""],peer:"",sample:false,base:null}}
+let ST=fresh();
+try{const s=JSON.parse(sessionStorage.getItem(KEY)||"null");if(s&&Array.isArray(s.kAns)&&s.kAns.length===26&&s.dc&&s.dc.most&&s.dc.least)ST=Object.assign(fresh(),s)}catch(e){}
+/* 화면을 닫아도 다음 단계로 이어지도록 KOSS·DISC 응답을 이 기기에 보관 */
+function keepCarry(){if(ST.sample||MODE==="qr")return;const c=carryGet();
+  if(MODE==="re"){if(kossDone()){c.re={d:ST.date,k:ST.kAns.slice()};carrySet(c)}return}
+  if(!kossDone())return;const dd=discDone()?dcNums():null;
+  c.base={g:ST.gender,r:ST.role,d:ST.date,k:ST.kAns.slice(),dd};carrySet(c)}
+function save(){try{sessionStorage.setItem(KEY,JSON.stringify(ST))}catch(e){}}
+const $=id=>document.getElementById(id);
+const app=$("app");
+let toastT;
+function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,2600)}
+function top0(){window.scrollTo({top:0,behavior:"smooth"})}
+
+/* ================================================================
+   KOSS-SF1 (원본 koss-sf1-26_8영역.html 에서 그대로 옮김)
+   S = 원본과 같은 이름의 상태 객체 (gender, role, date, ans)
+   ================================================================ */
+const S={gender:"",role:"",date:"",ans:Array(26).fill(0)};
+const CFG={"key": "sf26", "letter": "S", "name": "단축형-26", "code": "KOSS-SF1", "n": 26, "items": [["내 일은 위험하여 사고를 당할 가능성이 있다.", 0], ["나는 불편한 자세로 오랫동안 일을 해야 한다.", 0], ["나는 일이 많아 항상 시간에 쫓기며 일한다.", 0], ["업무량이 현저하게 증가하였다.", 0], ["업무 수행 중에 충분한 휴식(짬)이 주어진다.", 1], ["여러 가지 일을 동시에 해야 한다.", 0], ["내 업무는 창의력을 필요로 한다.", 1], ["내 업무를 수행하기 위해서는 높은 수준의 기술이나 지식이 필요하다.", 1], ["작업시간, 업무수행과정에서 내가 스스로 결정할 권한이 주어진다.", 1], ["나의 업무량과 작업스케줄을 스스로 조절할 수 있다.", 1], ["나의 상사는 업무를 수행하는데 도움을 준다.", 1], ["나의 동료는 업무를 수행하는데 도움을 준다.", 1], ["직장에서 내가 힘들 때 내가 힘들다는 것을 알아주고 이해해 주는 사람이 있다.", 1], ["직장 사정이 불안하여 미래가 불확실하다.", 0], ["나의 근무조건이나 상황에 바람직하지 못한 변화(예, 구조 조정)가 있었거나 있을 것으로 예상된다.", 0], ["우리 직장은 근무 평가, 인사제도(예, 승진, 부서 배치) 등의 정책 결정 과정이 공정하고 합리적이다.", 1], ["업무 수행에 필요한 인원, 공간, 시설, 장비, 훈련 등의 지원이 이루어지고 있다.", 1], ["우리 부서와 타 부서 간에는 마찰이 없고 업무 협조가 잘 이루어진다.", 1], ["업무 수행 과정에 나의 생각을 반영할 수 있는 기회와 통로가 있다.", 1], ["내가 쏟는 노력과 업적을 고려할 때, 나는 직장에서 제대로 존중과 신임을 받고 있다.", 1], ["내 사정이 앞으로 더 좋아질 것을 생각하면 힘든 줄 모르고 일하게 된다.", 1], ["나의 능력을 개발하고 발휘할 수 있는 기회가 주어진다.", 1], ["회식 자리가 불편하다.", 0], ["기준이나 일관성이 없는 상태로 업무지시를 받는다.", 0], ["직장의 분위기가 권위적이고 수직적이다.", 0], ["남성, 여성이라는 성적인 차이로 불이익을 받는다.", 0]], "groups": [2, 4, 4, 3, 2, 4, 3, 4], "src": "KOSHA GUIDE E – G – 2 - 2025 직무스트레스로 인한 건강장해 예방기술지원규정 <별표 3>·<별표 4>", "srcPart": "<별표 3> 단축형 문항, <별표 4> 참고치", "minutes": 8, "ref": {"m": [[33.3, 44.4, 66.7], [41.6, 50.0, 58.4], [41.6, 50.0, 66.7], [null, 33.3, 44.5], [33.3, 50.0, 66.7], [41.6, 50.0, 66.7], [33.3, 55.5, 66.7], [33.3, 41.6, 50.1]], "f": [[33.3, 44.4, 55.6], [50.0, 58.3, 66.7], [50.0, 58.3, 66.7], [null, 33.3, 44.5], [null, 33.3, 50.1], [41.6, 50.0, 66.7], [44.4, 55.5, 66.7], [33.3, 41.6, 50.1]]}, "total": {"m": [42.4, 48.4, 54.8], "f": [44.4, 50.0, 55.7]}};
+const DOMS=["물리적환경","직무요구","직무자율","관계갈등","직무불안정","조직체계","보상부적절","직장문화"];
+const DESC={
+ "물리적환경":"작업장의 위험, 불편한 자세, 청결·쾌적함",
+ "직무요구":"일의 양·시간 압박·동시 처리 부담",
+ "직무자율":"내 일을 스스로 결정하고 조절할 수 있는 정도 (높을수록 자율성 부족)",
+ "관계갈등":"상사·동료의 도움과 정서적 지지 (높을수록 지지 부족)",
+ "직무불안정":"고용과 근무조건에 대한 불안",
+ "조직체계":"인사제도 공정성, 자원 지원, 부서간 협조, 의견 반영 통로",
+ "보상부적절":"노력에 대한 존중·신임·성장 기회",
+ "직장문화":"회식 문화, 일관성 없는 지시, 권위적 분위기, 성차별"};
+const Q=CFG.items.map(([t,r])=>({t,r:!!r}));
+let k0=0;
+const D=DOMS.map((k,gi)=>{const n=CFG.groups[gi];const items=[...Array(n).keys()].map(i=>i+k0);k0+=n;return{k,items,desc:DESC[k],ref:{m:CFG.ref.m[gi],f:CFG.ref.f[gi]}}});
+const DOM_OF=[];D.forEach(d=>d.items.forEach(i=>DOM_OF[i]=d.k));
+const OPTS=["전혀 그렇지 않다","그렇지 않다","그렇다","매우 그렇다"];
+const TIPS={
+ "물리적환경":{me:["위험하거나 불편한 작업을 발견하면 날짜·장소를 적어 관리감독자에게 알리기","1시간마다 자세를 바꾸고 목·어깨·허리 스트레칭 5분 하기","작업 전 보호구 착용과 주변 위험 확인을 습관으로 만들기"],org:["위험성평가로 위험 요인과 불편한 작업 자세를 찾아 개선하기","소음·조명·온도·청결 등 작업환경을 정기 점검하고 개선하기"]},
+ "직무요구":{me:["하루 시작 5분, 할 일을 '급하고 중요한 일'부터 3가지만 고르기","50분 일하면 5~10분은 자리에서 일어나 스트레칭·물 마시기","동시에 여러 일을 받으면 '어느 것을 먼저 할까요?'라고 우선순위를 확인하기","업무량이 늘었다면 근거(건수, 시간)를 적어 상사와 조정 요청하기"],org:["업무량·인력을 점검해 업무를 재분배하고 휴게시간을 실제로 보장하기","작업 일정에 여유 시간을 두고 갑작스러운 추가 업무를 줄이기"]},
+ "직무자율":{me:["내가 정할 수 있는 범위(순서, 방법, 시간)를 상사와 구체적으로 합의하기","작은 개선 아이디어 1개를 기록해 회의 때 제안하기","새로운 기술·지식을 배워 맡을 수 있는 일의 폭 넓히기"],org:["작업 순서·방법 결정 권한을 현장에 위임하기","업무 일정 변경은 미리 알리고, 업무 설계 때 근로자 의견을 듣기"]},
+ "관계갈등":{me:["힘들 때 도움을 요청할 사람 1명을 정해 두기","동료에게 고마운 일을 구체적으로 말로 표현하기","갈등이 생기면 감정이 가라앉은 뒤 '사실-느낌-부탁' 순서로 대화하기"],org:["관리감독자가 정기적으로 1:1 대화 시간을 갖기","고충 상담 창구와 동료 지지 모임 운영하기"]},
+ "직무불안정":{me:["내가 바꿀 수 있는 일과 없는 일을 나눠 적고, 바꿀 수 있는 일에 집중하기","소문보다 공식 정보(공지, 담당자)를 확인하기","자격증·교육 등 경력 계획을 한 가지 세우기"],org:["조직 변화(구조조정, 부서 이동)는 이유와 일정을 미리 투명하게 공유하기","변화 시기에 상담·교육 지원 제공하기"]},
+ "조직체계":{me:["필요한 인원·장비·교육을 목록으로 만들어 공식 경로로 요청하기","제안제도, 노사협의회, 산업안전보건위원회 등 의견 통로 활용하기","협조가 필요한 부서 담당자와 짧은 정기 소통 시간 잡기"],org:["평가·승진 기준을 공개하고 결과를 설명하기","부서간 협의 채널을 만들고 의견 반영 결과를 알려주기"]},
+ "보상부적절":{me:["이번 달 내가 해낸 일을 3줄로 기록해 두기 (평가·면담 때 활용)","상사에게 정기적으로 피드백을 요청하기","배우고 싶은 업무나 교육 기회를 먼저 말해 보기"],org:["성과를 즉시, 구체적으로 인정하고 칭찬하기","교육·직무 순환 등 능력 개발 기회를 공정하게 제공하기"]},
+ "직장문화":{me:["지시가 모호하면 '언제까지, 어떤 결과로' 다시 확인하기","회식이 부담되면 미리 참석 범위를 정해 정중히 알리기","성차별·괴롭힘을 겪으면 날짜와 내용을 기록하고 고충처리 창구에 알리기"],org:["회식은 자율 참석, 1차·이른 시간 마무리 원칙 정하기","업무지시 기준을 문서로 정리하고 수평적 소통 시간 운영하기","성차별·직장 내 괴롭힘 예방 교육과 신고 절차 안내하기"]}
+};
+
+// 판정: 상위25% 기준 이상=고위험, 중앙값 초과=경계, 그 외=정상
+const LV={hi:"고위험",mid:"경계",ok:"정상"};
+function level(v,[a,b,d]){return v>=d?"hi":v>b?"mid":"ok"}
+function band(v,[a,b,d]){return v>=d?3:v>b?2:(a===null||v>a)?1:0}
+// [통합본 수정 2026-10-31, 혜진님 승인] 소수 오차 때문에 x.x5가 내려가던 문제를 가이드 방식(반올림)으로 보정
+const r1=v=>Math.round(Number((v*10).toFixed(6)))/10;
+const f1=v=>r1(v).toFixed(1);
+function score(){
+  // 응답(1~4) → 점수(역채점 반영) → 영역별 100점 환산: (합계-문항수)/(문항수×3)×100, 총점=8개 영역 평균
+  const pts=S.ans.map((a,i)=>Q[i].r?5-a:a);
+  const g=S.gender||"m";
+  const ds=D.map(d=>{const n=d.items.length,sum=d.items.reduce((s,i)=>s+pts[i],0);const v=r1((sum-n)/(3*n)*100);const ref=d.ref[g];return{...d,v,ref,lv:level(v,ref),band:band(v,ref)}});
+  const total=r1(ds.reduce((s,d)=>s+d.v,0)/ds.length);
+  const tref=CFG.total[g];
+  return{ds,total,tref,tlv:level(total,tref),tband:band(total,tref)};
+}
+function priorities(ds){
+  const hi=ds.filter(d=>d.lv==="hi").sort((a,b)=>(b.v-b.ref[2])-(a.v-a.ref[2]));
+  const mid=ds.filter(d=>d.lv==="mid").sort((a,b)=>(b.v-b.ref[1])-(a.v-a.ref[1]));
+  const ok=ds.filter(d=>d.lv==="ok").sort((a,b)=>(b.v-b.ref[2])-(a.v-a.ref[2]));
+  return{hi,mid,list:[...hi,...mid,...ok]};
+}
+
+// 8각형: 참고치 구간을 색 띠로(안쪽 초록=정상, 노랑=경계, 바깥 빨강=고위험), 하위25% 경계는 점선
+function radarSVG(ds,P){
+  P=P||{line:"var(--line)",muted:"var(--muted)",ink:"var(--ink)",acc:"var(--accent)",warn:"var(--warn)",mid:"var(--mid)",okS:"var(--ok-soft)",midS:"var(--mid-soft)",hiS:"var(--warn-soft)",surf:"var(--surface)"};
+  const W=500,H=420,cx=W/2,cy=H/2+4,R=140,n=ds.length;
+  const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[cx+Math.cos(a)*R*v/100,cy+Math.sin(a)*R*v/100]};
+  const poly=vals=>vals.map((v,i)=>pt(i,v).map(x=>x.toFixed(1)).join(",")).join(" ");
+  let g="";
+  g+=`<polygon points="${poly(Array(n).fill(100))}" fill="${P.hiS}" stroke="none"/>`;
+  g+=`<polygon points="${poly(ds.map(d=>d.ref[2]))}" fill="${P.midS}" stroke="${P.warn}" stroke-width="1.5" stroke-dasharray="5 3"/>`;
+  g+=`<polygon points="${poly(ds.map(d=>d.ref[1]))}" fill="${P.okS}" stroke="${P.mid}" stroke-width="1.2" stroke-dasharray="4 3"/>`;
+  g+=`<polygon points="${poly(ds.map(d=>d.ref[0]===null?0.5:d.ref[0]))}" fill="none" stroke="${P.muted}" stroke-width="1" stroke-dasharray="1.5 3"/>`;
+  [25,50,75,100].forEach(l=>{g+=`<polygon points="${poly(Array(n).fill(l))}" fill="none" stroke="${P.line}" stroke-width="1" opacity=".9"/>`});
+  ds.forEach((d,i)=>{const[x,y]=pt(i,100);g+=`<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${P.line}" stroke-width="1"/>`});
+  [50,100].forEach(l=>{g+=`<text x="${cx+4}" y="${(cy-R*l/100+12).toFixed(1)}" font-size="10" fill="${P.muted}" font-family="IBM Plex Mono,monospace">${l}</text>`});
+  g+=`<polygon points="${poly(ds.map(d=>Math.max(d.v,2)))}" fill="${P.acc}" fill-opacity=".18" stroke="${P.acc}" stroke-width="2.8" stroke-linejoin="round"/>`;
+  ds.forEach((d,i)=>{const[x,y]=pt(i,Math.max(d.v,2));g+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="${d.lv==="hi"?P.warn:d.lv==="mid"?P.mid:P.acc}" stroke="${P.surf}" stroke-width="1.5"/>`});
+  ds.forEach((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/n;const c=Math.cos(a);const lx=cx+c*(R+22),ly=cy+Math.sin(a)*(R+20)+(Math.sin(a)>0.5?8:0);const anchor=Math.abs(c)<.2?"middle":(c>0?"start":"end");
+    const col=d.lv==="hi"?P.warn:d.lv==="mid"?P.mid:P.ink;
+    g+=`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" font-size="14" font-weight="600" fill="${col}" font-family="IBM Plex Sans KR,sans-serif">${d.k}</text><text x="${lx.toFixed(1)}" y="${(ly+16).toFixed(1)}" text-anchor="${anchor}" font-size="12" fill="${P.muted}" font-family="IBM Plex Mono,monospace">${f1(d.v)} · ${LV[d.lv]}</text>`});
+  return `<svg id="radar" viewBox="0 0 ${W} ${H}" role="img" aria-label="8개 영역 직무스트레스 점수와 참고치 구간 8각형 도표">${g}</svg>`;
+}
+function rangeTxt([a,b,d]){
+  return[a===null?"-":f1(a)+" 이하", a===null?f1(b)+" 이하":f1(a+0.1)+"~"+f1(b), f1(b+0.1)+"~"+f1(d-0.1), f1(d)+" 이상"];
+}
+
+// 개인 맞춤 예방 프로그램 (KOSHA GUIDE 직무스트레스 예방 프로그램 업무 흐름도 단계 적용)
+function program(R){
+  const {ds,total,tref,tlv}=R; const P=priorities(ds);
+  const top=P.list.slice(0,Math.max(1,Math.min(3,P.hi.length+P.mid.length)||2));
+  const focus=top.length?top:P.list.slice(0,2);
+  const d0=S.date||todayKST(), sup=S.role==="s";
+  const refer = tlv==="hi" || P.hi.length>=3;
+  const weeks=[0,7,14,21,28].map(n=>addDays(d0,n));
+  const rows=[];
+  rows.push([fmtD(weeks[0])+"~"+fmtD(addDays(d0,6)),`[${focus[0].k}] ${TIPS[focus[0].k].me[0]}`,"매일 1회, 실천 여부를 달력에 체크"]);
+  rows.push([fmtD(weeks[1])+"~"+fmtD(addDays(d0,13)),`[${focus[0].k}] ${sup?TIPS[focus[0].k].org[0]:"관리감독자와 10분 면담: "+TIPS[focus[0].k].org[0]}`,sup?"팀 회의 안건으로 올리고 담당자·기한 정하기":"점검 결과 중 영역 이름만 공유하고 개선 요청"]);
+  if(focus[1]) rows.push([fmtD(weeks[2])+"~"+fmtD(addDays(d0,20)),`[${focus[1].k}] ${TIPS[focus[1].k].me[0]}`,focus[2]?`함께: [${focus[2].k}] ${TIPS[focus[2].k].me[0]}`:"주 3회 이상 실천"]);
+  else rows.push([fmtD(weeks[2])+"~"+fmtD(addDays(d0,20)),`[${focus[0].k}] ${TIPS[focus[0].k].me[1]||TIPS[focus[0].k].me[0]}`,"주 3회 이상 실천"]);
+  rows.push([fmtD(weeks[3])+"~"+fmtD(addDays(d0,27)),"퇴근 전 5분 목·어깨 스트레칭과 4초 들숨·6초 날숨 호흡","매일, 스트레스 관리 기본 습관"]);
+  rows.push([fmtD(weeks[4]),"같은 점검을 다시 하고 8각형 비교 (평가·피드백)","1순위 영역 점수 변화와 실천율 확인"]);
+  const goals=[
+    `4주 뒤(${fmtD(weeks[4])}) 재점검에서 1순위 [${focus[0].k}] 점수를 ${focus[0].lv==="hi"?"고위험 기준 "+f1(focus[0].ref[2])+"점 미만":"중앙값 "+f1(focus[0].ref[1])+"점 이하"}으로 낮추기 (현재 ${f1(focus[0].v)}점)`,
+    `계획한 실천 항목을 4주 동안 주 3회 이상 실행하기`,
+    tlv==="ok"?`총점 ${f1(total)}점을 정상 범위(중앙값 ${f1(tref[1])}점 이하)로 유지하기`:`총점 ${f1(total)}점을 ${tlv==="hi"?"고위험 기준 "+f1(tref[2])+"점 미만":"중앙값 "+f1(tref[1])+"점 이하"}으로 낮추기`
+  ];
+  const steps=[
+   {stage:"유해요인 평가",title:"나의 위험 영역 확인",html:`<p>고위험 ${P.hi.length}개 영역${P.hi.length?" ("+P.hi.map(d=>d.k).join(", ")+")":""}, 경계 ${P.mid.length}개 영역${P.mid.length?" ("+P.mid.map(d=>d.k).join(", ")+")":""}. 총점은 ${f1(total)}점으로 <b>${LV[tlv]}</b> 수준입니다.</p>`},
+   {stage:"우선순위 설정",title:"먼저 다룰 영역",html:`<ul>${focus.map((d,i)=>`<li><b>${i+1}순위 ${d.k}</b> ${f1(d.v)}점 · ${LV[d.lv]} <span class="note">(상위25% 기준 ${f1(d.ref[2])})</span></li>`).join("")}</ul>`},
+   {stage:"목표 설정",title:"4주 목표",html:`<ul class="goal">${goals.map(t=>`<li>${t}</li>`).join("")}</ul>`},
+   {stage:"세부 실행계획 수립",title:"주차별 실행계획",html:`<ul class="plan-list">${rows.map(r=>`<li><span class="pd">${r[0]}</span><span>${esc(r[1])}</span><span class="note">방법: ${esc(r[2])}</span></li>`).join("")}</ul>`},
+   {stage:"예방 프로그램 실행",title:"함께 쓸 수 있는 자원",html:`<p class="who">개인 차원</p><ul><li>예방교육 참여, 근골격계 스트레칭·호흡 등 스트레스 관리 습관</li>${focus.map(d=>`<li>${d.k}: ${TIPS[d.k].me[1]||TIPS[d.k].me[0]}</li>`).join("")}</ul>
+     <p class="who">조직 차원 (관리감독자·회사에 요청)</p><ul>${focus.map(d=>`<li>${d.k}: ${TIPS[d.k].org[0]}</li>`).join("")}</ul>
+     <p class="who">상담·외부 자원</p><ul><li>${refer?"<b>고위험 신호가 있어 전문 상담을 먼저 권합니다.</b> ":""}근로자건강센터(안전보건공단, 무료 직무스트레스 상담)</li><li>직업트라우마센터(사고·폭언 등 충격 경험 시), 지역 정신건강복지센터</li></ul>`},
+   {stage:"평가 및 피드백",title:"4주 뒤 다시 점검",html:`<p>${fmtD(weeks[4])}에 같은 점검을 다시 해서 1순위 영역 점수와 실천율을 비교하세요. 잘 안 된 항목은 이유를 적고 다음 4주 계획에 반영합니다.</p>`}
+  ];
+  if(sup) steps.push({stage:"관리감독자 추가 과제",title:"우리 팀 예방 프로그램으로 넓히기",html:`<ul><li><b>추진팀 구성:</b> 팀 안에서 직무스트레스 담당자 1명과 보건관리자를 연결하기</li><li><b>요구도 조사:</b> 팀원이 원하는 프로그램(상담, 교육, 업무조정 등)과 참여 의사를 간단히 묻기</li><li><b>우선순위·목표:</b> 팀 공통으로 높게 나온 영역을 정하고 '고위험군 비율 감소, 프로그램 참여율 증가'를 목표로 삼기</li><li><b>예방 정책:</b> 안전보건관리규정에 직무스트레스 예방 내용을 넣도록 건의하기</li></ul>`});
+  return{steps,focus,goals,rows,refer};
+}
+
+
+
+/* ================================================================
+   DISC (원본 disc-test.html v1 에서 그대로 옮김)
+   ================================================================ */
+/* ===== 2. 단계 환산표 (유형별 집계표 하단 그래프) =====
+   각 배열 = 7단계, 6단계, 5단계, 4단계, 3단계, 2단계의 '최소 점수'. 이보다 낮으면 1단계.
+   I형 7단계: 원본 인쇄 +6 (6단계 +5~+9와 겹침) → 사용자 확인 대기 중, 임시로 +10 적용 */
+const I_STAGE7_MIN = 10; // [2026-10-31 혜진님 확인] 6단계가 +5~+9이므로 7단계는 +10 이상 (인쇄값 +6은 6단계와 겹침)
+const STAGE_MIN = {
+  D: [6, 1, -2, -5, -8, -11],
+  I: [I_STAGE7_MIN, 5, 2, -1, -5, -9],
+  S: [11, 8, 5, 2, -1, -4],
+  C: [11, 7, 4, 1, -2, -6]
+};
+const TYPES = ["D","I","S","C"];
+const TYPE_NAME = {D:"주도형",I:"사교형",S:"안정형",C:"신중형"};
+
+/* ===== 3. 채점 ===== */
+function toStage(type, score){
+  const mins = STAGE_MIN[type];
+  for (let k = 0; k < mins.length; k++) if (score >= mins[k]) return 7 - k;
+  return 1;
+}
+
+/* ===== 4. 유형별 해석 ===== */
+const INFO = {
+ D:{feature:"목표와 결과를 중시하고, 빠르게 판단해 행동으로 옮기는 경향이 있습니다. 어려운 상황에서 앞장서서 방향을 정하는 편입니다.",
+  strength:["신속한 의사결정과 실행력","위기·비상 상황에서 상황을 주도","목표 달성을 끝까지 밀고 나가는 추진력","문제를 피하지 않고 직접 해결"],
+  caution:["속도를 앞세우다 절차나 세부 확인을 건너뛸 수 있음","지시가 짧고 단호해 상대가 의견을 말하기 어려워할 수 있음","다른 사람의 의견을 다 듣기 전에 결론을 내릴 수 있음"],
+  comm:["내가 말할 때: 결론과 이유를 말한 뒤 \"어떻게 생각해요?\"라고 상대 의견을 꼭 묻기","이 유형과 대화할 때: 요점부터 짧게, 선택지와 기대 결과를 함께 제시"],
+  stress:["일이 내 뜻대로 통제되지 않을 때 조급해짐","말투가 강해지거나 혼자 처리하려 함"],
+  manage:["빠르게 걷기·근력운동처럼 몸을 쓰는 활동으로 긴장 풀기","중요한 결정 전 10초 멈추고 심호흡하기","통제할 수 있는 일과 없는 일을 나눠 적어 보기","혼자 떠안지 말고 업무를 나눠 맡기기"],
+  supervisor:["작업 전 안전점검회의(TBM)에서 목표와 위험요인을 분명하게 전달하는 데 강점이 있습니다.","위험할 때 작업중지를 주저 없이 결정할 수 있습니다.","\"빨리 끝내자\"보다 \"확인했나요?\"를 먼저 묻고, 작업자 의견을 끝까지 듣는 시간을 따로 정해 두세요."]},
+ I:{feature:"사람과의 관계와 분위기를 중시하고, 표현이 풍부하며 낙관적인 경향이 있습니다. 다른 사람을 설득하고 격려하는 편입니다.",
+  strength:["밝은 분위기를 만들고 참여를 이끌어 냄","칭찬과 격려로 동기부여","새로운 아이디어 제안","사람 사이의 긴장을 부드럽게 풀어 줌"],
+  caution:["세부사항·기록·마감 관리가 느슨해질 수 있음","낙관적으로 보다가 위험을 작게 볼 수 있음","여러 약속을 한꺼번에 해 일이 몰릴 수 있음"],
+  comm:["내가 말할 때: 핵심 내용은 메모나 문자로 한 번 더 정리해 전달하기","이 유형과 대화할 때: 먼저 인정과 칭찬, 이야기할 기회를 주고 세부사항은 문서로 정리해 주기"],
+  stress:["무시당하거나 고립된다고 느낄 때 힘들어함","말이 많아지거나 감정이 겉으로 드러나고, 비판에 예민해짐"],
+  manage:["믿을 수 있는 동료와 대화하며 감정 정리하기","할 일을 체크리스트로 적어 머릿속 부담 줄이기","함께하는 운동이나 즐거운 취미로 기분 전환","일정 사이에 여유 시간을 두기"],
+  supervisor:["안전교육과 TBM 분위기를 살려 작업자의 참여와 질문을 끌어내는 데 강점이 있습니다.","안전하게 일한 작업자를 바로 칭찬해 안전행동을 늘릴 수 있습니다.","점검과 기록은 체크리스트로 보완하고, 위험성평가 때 \"가장 나쁜 경우는?\"을 한 번 더 물어보세요."]},
+ S:{feature:"안정과 협력을 중시하고, 꾸준하고 차분한 경향이 있습니다. 다른 사람을 돕고 팀을 뒷받침하는 편입니다.",
+  strength:["맡은 일을 꾸준하고 일관되게 실행","다른 사람의 말을 잘 들어 줌","팀워크와 신뢰 형성","정해진 절차를 성실하게 지킴"],
+  caution:["갑작스러운 변화에 적응할 시간이 필요함","갈등을 피하려고 불편한 의견(위험 신고 등)을 말하지 않을 수 있음","거절이 어려워 일이 한 사람에게 몰릴 수 있음"],
+  comm:["내가 말할 때: 불편한 점도 작게라도 바로 말하기, \"이번엔 어렵습니다\" 연습하기","이 유형과 대화할 때: 충분한 시간과 설명, 변화는 미리 알리고 단계적으로, 의견을 직접 물어봐 주기"],
+  stress:["급한 변화나 갈등 상황에서 말이 줄고 속으로 참음","결정을 미루거나 혼자 부담을 안음"],
+  manage:["감정을 쌓아 두지 말고 가까운 사람에게 작게 표현하기","규칙적인 생활과 가벼운 스트레칭으로 몸의 긴장 풀기","변화는 작은 단계로 나눠 하나씩 적응하기","거절해도 관계가 깨지지 않는다는 경험 쌓기"],
+  supervisor:["작업자의 이야기를 잘 들어 아차사고와 불편사항을 모으는 데 강점이 있습니다.","표준작업절차를 꾸준히 지키도록 이끄는 역할에 잘 맞습니다.","위험 상황에서는 망설이지 않도록 작업중지 기준을 미리 정해 두고 그대로 따르세요."]},
+ C:{feature:"정확성과 품질을 중시하고, 자료와 기준에 근거해 판단하는 경향이 있습니다. 체계적이고 분석적인 편입니다.",
+  strength:["꼼꼼한 점검과 확인","규정과 기준을 정확히 지킴","문제의 원인을 체계적으로 분석","위험요인을 미리 찾아내고 기록으로 남김"],
+  caution:["완벽을 추구하다 결정이 늦어질 수 있음","지적이 비판처럼 들려 상대가 위축될 수 있음","감정 표현이 적어 거리감이 느껴질 수 있음"],
+  comm:["내가 말할 때: 개선점보다 잘한 점을 먼저 말하고, 결론을 앞에 두기","이 유형과 대화할 때: 자료와 근거를 준비하고, 생각할 시간을 주며, 구체적으로 질문하기"],
+  stress:["기준이 모호하거나 비판을 받을 때 지나치게 신중해짐","혼자 파고들며 걱정이 많아짐"],
+  manage:["\"이 정도면 충분하다\"는 기준을 미리 정하기","걱정되는 일을 종이에 적고 할 수 있는 일만 고르기","혼자 조용히 쉬는 회복 시간 확보하기","복식호흡·이완 체조로 긴장 낮추기"],
+  supervisor:["위험성평가, 작업 전 점검, 법적 기준 확인에서 강점이 있습니다.","점검 결과를 전달할 때 잘된 점을 먼저 말하면 작업자의 수용도가 높아집니다.","긴급 상황에서는 \"지금 결정할 것\"과 \"나중에 분석할 것\"을 나눠 빠르게 판단하세요."]}
+};
+
+
+const chartW = () => Math.max(330, Math.min(640, Math.round(($("stageChart").clientWidth || 640))));
+const colorOf = t => getComputedStyle(document.documentElement).getPropertyValue("--" + t.toLowerCase()).trim();
+const sign = n => (n > 0 ? "+" : "") + n;
+function drawStageChart(r){
+  const W = chartW(), H = W < 500 ? 380 : 420, L = W < 500 ? 12 : 44, R = 40, T = 20, B = 40;
+  const bandH = (H - T - B) / 7, colW = (W - L - R) / 4;
+  const ink = "var(--ink)", muted = "var(--muted)";
+  let s = '<svg viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="DISC 단계 그래프">';
+  for (let st = 7; st >= 1; st--){
+    const y = T + (7 - st) * bandH;
+    s += '<rect x="' + L + '" y="' + y + '" width="' + (W - L - R) + '" height="' + bandH + '" fill="' + (st % 2 ? "var(--band)" : "var(--band-2)") + '"/>';
+    s += '<text x="' + (W - R + 14) + '" y="' + (y + bandH / 2 + 5) + '" font-size="14" fill="' + muted + '" text-anchor="middle">' + st + "</text>";
+  }
+  s += '<text x="' + (W - R + 14) + '" y="' + (T - 6) + '" font-size="11" fill="' + muted + '" text-anchor="middle">단계</text>';
+  // 중간선(4단계 중앙)
+  const midY = T + 3.5 * bandH;
+  s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + midY + '" y2="' + midY + '" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 5"/>';
+  const pts = TYPES.map((t, k) => {
+    const x = L + colW * (k + 0.5);
+    const y = T + (7 - r.stage[t]) * bandH + bandH / 2;
+    return {t, x, y};
+  });
+  TYPES.forEach((t, k) => {
+    const x = L + colW * (k + 0.5);
+    s += '<line x1="' + x + '" x2="' + x + '" y1="' + T + '" y2="' + (H - B) + '" stroke="var(--line)" stroke-width="1.5"/>';
+    s += '<text x="' + x + '" y="' + (H - B + 28) + '" font-size="20" font-weight="700" fill="' + ink + '" text-anchor="middle">' + t + "</text>";
+  });
+  s += '<polyline points="' + pts.map(p => p.x + "," + p.y).join(" ") + '" fill="none" stroke="var(--muted)" stroke-width="2.5"/>';
+  pts.forEach(p => {
+    const top = r.primary.includes(p.t);
+    s += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + (top ? 13 : 8) + '" fill="var(--' + p.t.toLowerCase() + ')" stroke="var(--surface)" stroke-width="3"/>';
+    const lab = sign(r.diff[p.t]) + " (" + r.stage[p.t] + ")";
+    s += '<text x="' + p.x + '" y="' + (p.y - (top ? 20 : 15)) + '" font-size="' + (top ? 16 : 14) + '" font-weight="' + (top ? 700 : 500) + '" fill="' + ink + '" text-anchor="middle" paint-order="stroke" stroke="var(--surface)" stroke-width="4">' + lab + "</text>";
+  });
+  s += "</svg>";
+  $("stageChart").innerHTML = s;
+}function drawBarChart(r){
+  const W = chartW(), rowH = 54, T = 16, B = 30, L = W < 500 ? 92 : 120, R = 30;
+  const H = T + B + rowH * 4;
+  const maxAbs = Math.max(10, ...TYPES.map(t => Math.abs(r.diff[t])));
+  const lim = Math.ceil(maxAbs / 5) * 5;
+  const x0 = L + (W - L - R) / 2, sc = (W - L - R) / 2 / lim;
+  let s = '<svg viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="차이점수 막대그래프">';
+  for (let v = -lim; v <= lim; v += 5){
+    const x = x0 + v * sc;
+    s += '<line x1="' + x + '" x2="' + x + '" y1="' + T + '" y2="' + (H - B) + '" stroke="var(--line)" stroke-width="' + (v === 0 ? 2 : 1) + '"/>';
+    s += '<text x="' + x + '" y="' + (H - B + 20) + '" font-size="12" fill="var(--muted)" text-anchor="middle">' + sign(v) + "</text>";
+  }
+  TYPES.forEach((t, k) => {
+    const y = T + k * rowH + 10, h = rowH - 20, v = r.diff[t];
+    const top = r.primary.includes(t);
+    s += '<text x="' + (L - 12) + '" y="' + (y + h / 2 + 6) + '" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="end">' + t + " " + TYPE_NAME[t] + "</text>";
+    const x = v >= 0 ? x0 : x0 + v * sc, w = Math.max(Math.abs(v) * sc, 2);
+    s += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="4" fill="var(--' + t.toLowerCase() + ')" opacity="' + (top ? 1 : .55) + '"/>';
+    const lx = v >= 0 ? x + w + 8 : x - 8;
+    s += '<text x="' + lx + '" y="' + (y + h / 2 + 5) + '" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="' + (v >= 0 ? "start" : "end") + '">' + sign(v) + "</text>";
+  });
+  s += "</svg>";
+  $("barChart").innerHTML = s;
+}
+function typeBlock(t){
+  const d = INFO[t], li = a => "<ul>" + a.map(x => "<li>" + x + "</li>").join("") + "</ul>";
+  return '<div class="typeblock stack" data-type="' + t + '"><h3 style="color:var(--' + t.toLowerCase() + ')">' + t + "형 · " + TYPE_NAME[t] + "</h3>" +
+    '<div class="sec">' +
+    '<div class="wide"><h3>기본 행동 특성</h3><p>' + d.feature + "</p></div>" +
+    "<div><h3>업무에서의 강점</h3>" + li(d.strength) + "</div>" +
+    "<div><h3>업무에서 주의할 점</h3>" + li(d.caution) + "</div>" +
+    "<div><h3>동료와의 의사소통</h3>" + li(d.comm) + "</div>" +
+    "<div><h3>스트레스 상황에서 나타날 수 있는 반응</h3>" + li(d.stress) + "</div>" +
+    "<div><h3>나에게 맞는 스트레스 관리방법</h3>" + li(d.manage) + "</div>" +
+    "<div><h3>관리감독자로서 소통·관리 방법</h3>" + li(d.supervisor) + "</div>" +
+    "</div></div>";
+}
+/* STEP 2는 종이 DISC 검사지로 하고, 집계표의 유형별 최고·최소 개수만 입력 (문항은 사이트에 없음) */
+const DISC_N=28,MIN_SUM=22; /* 28문항 중 N(미반영) 단어가 있는 문항이 최고·최소 각각 6개라 D·I·S·C 합계는 22~28 */
+/* 원본 scoreAnswers와 같은 계산(차이점수 = 최고 − 최소, 단계 환산표, 가장 높은 단계 = 대표 유형). 입력이 문항 응답이 아니라 집계 개수인 것만 다름 */
+function scoreCounts(c){
+  const most={D:+c.most.D,I:+c.most.I,S:+c.most.S,C:+c.most.C},least={D:+c.least.D,I:+c.least.I,S:+c.least.S,C:+c.least.C};
+  most.N=DISC_N-TYPES.reduce((a,t)=>a+most[t],0);least.N=DISC_N-TYPES.reduce((a,t)=>a+least[t],0);
+  const diff={},stage={};
+  TYPES.forEach(t=>{diff[t]=most[t]-least[t];stage[t]=toStage(t,diff[t])});
+  const topStage=Math.max(...TYPES.map(t=>stage[t]));
+  const primary=TYPES.filter(t=>stage[t]===topStage);
+  return{most,least,diff,stage,topStage,primary};
+}
+const DISC_SAMPLE_DC={most:{D:10,I:2,S:11,C:2,N:3},least:{D:5,I:7,S:7,C:7,N:2}}; /* 원본 disc-test.html의 시연 응답을 집계한 값 */
+const okNum=v=>v!==""&&v!==null&&Number.isInteger(+v)&&+v>=0&&+v<=DISC_N;
+/* 종이 집계표처럼 N(미반영)까지 입력받아 합계 28을 확인. N은 차이·단계 계산에는 쓰지 않음 */
+const T5=["D","I","S","C","N"];
+function dcCheck(dc){
+  for(const k of["most","least"])for(const t of T5)if(!okNum(dc[k][t]))return"빈 칸이나 0~28이 아닌 숫자가 있어요.";
+  for(const[k,n]of[["most","최고치"],["least","최소치"]]){const s=T5.reduce((a,t)=>a+ +dc[k][t],0);
+    if(s!==DISC_N)return n+" 합계가 "+s+"개예요. N까지 더해서 28이 되어야 해요. 다시 세어 주세요.";
+    if(+dc[k].N>DISC_N-MIN_SUM)return n+"의 N이 "+dc[k].N+"개예요. N은 최대 "+(DISC_N-MIN_SUM)+"개까지 나와요. 다시 세어 주세요."}
+  return"";
+}
+const dcNums=()=>[...TYPES.map(t=>+ST.dc.most[t]),...TYPES.map(t=>+ST.dc.least[t])];
+const dcFrom=a=>{const s=(x,y)=>DISC_N-a.slice(x,y).reduce((p,q)=>p+q,0);return{most:{D:a[0],I:a[1],S:a[2],C:a[3],N:s(0,4)},least:{D:a[4],I:a[5],S:a[6],C:a[7],N:s(4,8)}}};
+const dcStarted=()=>["most","least"].some(k=>T5.some(t=>ST.dc[k][t]!==""&&ST.dc[k][t]!==undefined));
+
+/* 강사 시연용 KOSS 예시 응답(1~4). 실제 교육생 결과가 아님 */
+const KOSS_SAMPLE=[3,3,3,3,2,4,2,2,2,2,2,3,2,2,3,2,2,2,2,2,2,3,2,3,3,1];
+
+/* ================================================================
+   결과 계산 (원본 채점 함수만 사용, 새 점수 없음)
+   ================================================================ */
+function syncS(){S.gender=ST.gender;S.role=ST.role;S.date=ST.date;S.ans=ST.kAns.slice()}
+const kossDone=()=>ST.kAns.every(a=>a>=1&&a<=4);
+const discDone=()=>!dcCheck(ST.dc);
+function kossResult(){syncS();const R=score();return{R,P:priorities(R.ds),PG:program(R)}}
+function discResult(){return scoreCounts(ST.dc)}
+/* 결과 코드: [성별][KOSS판]-[문항점수 26자리(원본 KOSS 결과 코드와 같음)]-[역할 W/S][DISC 최고 D·I·S·C, 최소 D·I·S·C 개수 8자리(36진수)]-[점검일 YYMMDD]. 이름 없음 */
+const B36="0123456789ABCDEFGHIJKLMNOPQRS";
+function makeCode(g,r,d,k,dd){return(g==="f"?"F":"M")+CFG.letter+"-"+k.map((a,i)=>Q[i].r?5-a:a).join("")+"-"+(r==="s"?"S":"W")+(dd?dd.map(v=>B36[v]).join(""):"")+"-"+String(d||"").slice(2).replace(/-/g,"")}
+function curCode(){return makeCode(ST.gender,ST.role,ST.date,ST.kAns,discDone()?dcNums():null)}
+function parseCode(s){
+  s=String(s||"").replace(/[\s\u200b]+/g,"").toUpperCase().replace(/[‐-―−]/g,"-");
+  const m=s.match(/^([MF])([A-Z])-([1-4]{26})(?:-([WS])([0-9A-S]{8})?(?:-(\d{6}))?)?$/);
+  if(!m)return{err:"코드 모양이 맞지 않아요. 빠진 글자가 없는지 확인해 주세요."};
+  if(m[2]!==CFG.letter)return{err:"KOSS 단축형(26문항) 결과 코드가 아니에요."};
+  const k=m[3].split("").map((p,i)=>Q[i].r?5-+p:+p);
+  let dd=null;if(m[5]){dd=m[5].split("").map(c=>B36.indexOf(c));if(dcCheck(dcFrom(dd)))return{err:"코드 일부가 잘못됐어요. 다시 복사해 주세요."}}
+  let d="";if(m[6]){d="20"+m[6].slice(0,2)+"-"+m[6].slice(2,4)+"-"+m[6].slice(4);if(!/^20\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(d))d=""}
+  return{g:m[1]==="F"?"f":"m",r:m[4]?(m[4]==="S"?"s":"w"):"",d,k,dd};
+}
+function scoreOf(k,g){const sv={g:S.gender,a:S.ans};S.gender=g;S.ans=k.slice();const R=score();S.gender=sv.g;S.ans=sv.a;return R}
+const codeBox=(note)=>`<div class="codebox"><p class="code" id="rcode">${esc(curCode())}</p>${note?`<p class="small muted">${note}</p>`:""}<div class="row"><button class="btn ghost" type="button" id="copyCode">결과 코드 복사</button></div></div>`;
+function wireCode(){const b=$("copyCode");if(!b)return;b.addEventListener("click",()=>{const t=curCode();navigator.clipboard.writeText(t).then(()=>toast("결과 코드를 복사했어요. 메모나 '나에게 보내기'에 붙여 두세요.")).catch(()=>{const r=document.createRange();r.selectNodeContents($("rcode"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("코드를 선택해 두었어요. 길게 눌러 복사해 주세요.")})})}
+/* STEP 간에 넘기는 요약(문항별 원 응답 없음) */
+function kossSummary(){
+  const {R,P}=kossResult();
+  return{schema:"koss-result-summary/v1",generated_at:new Date().toLocaleString("sv-SE",{timeZone:"Asia/Seoul"}).replace(" ","T")+"+09:00",
+    instrument:{key:CFG.key,code:CFG.code,name:CFG.name,items:CFG.n,domains:8},gender_ref:ST.gender,
+    domains:R.ds.map(d=>({k:d.k,v:d.v,ref:d.ref,lv:d.lv,band:d.band})),total:{v:R.total,ref:R.tref,lv:R.tlv},
+    high_factors:P.hi.map(d=>d.k),watch_factors:P.mid.map(d=>d.k)}
+}
+const TYPE_COLOR=t=>"var(--"+t.toLowerCase()+")";
+const stripLead=s=>s.replace(/^[^:]+:\s*/,"");
+
+/* ================================================================
+   화면 이동
+   ================================================================ */
+function allowed(v){
+  if(MODE==="12")return["home","s1","s1r","s2","s2r"].includes(v);
+  if(MODE==="34")return["home","s1r","s2r","s3","s4"].includes(v);
+  if(MODE==="re")return["home","s1","s1r"].includes(v);
+  if(MODE==="qr")return v==="home";
+  return true;
+}
+function canGo(v){
+  if(v==="home")return true;
+  if(!allowed(v))return false;
+  if(!ST.gender||!ST.role||!ST.date)return false;
+  if(v==="s1")return true;
+  if(v==="s1r"||v==="s2")return kossDone();
+  if(v==="s2r")return kossDone()&&discDone();
+  return kossDone()&&discDone();
+}
+function go(v){if(!allowed(v)){toast(MODE==="12"?"STEP 3·4는 강사님이 보여주시는 다음 QR로 이어져요.":MODE==="34"?"STEP 1·2는 앞 QR에서 이미 마쳤어요.":"이 링크에서는 열 수 없는 단계예요.");return}if(!canGo(v)){toast(!(ST.gender&&ST.role&&ST.date)?"시작 화면에서 성별·역할·날짜를 먼저 선택해 주세요.":(v==="s1r"||v==="s2")?"STEP 1을 먼저 마쳐 주세요.":"STEP 1과 STEP 2를 먼저 마쳐 주세요.");return}ST.view=v;save();render();top0()}
+document.querySelectorAll(".stp").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.go;if(v==="s1"&&kossDone())go("s1r");else if(v==="s2"&&discDone())go("s2r");else go(v)}));
+function header(){
+  const base=ST.view.replace("r","");
+  const done={s1:kossDone(),s2:discDone(),s3:kossDone()&&discDone(),s4:kossDone()&&discDone()};
+  ["s1","s2","s3","s4"].forEach((s,i)=>{const b=$("nav"+(i+1));b.classList.toggle("on",base===s);b.classList.toggle("done",done[s]&&base!==s);b.disabled=!(canGo(s)||(s==="s1"&&canGo("s1r"))||(s==="s2"&&canGo("s2r")));b.setAttribute("aria-current",base===s?"step":"false")});
+  $("topNote").textContent=MODE==="qr"?"강사용":ST.date?"점검일 "+ST.date.replace(/-/g,".")+".":"";
+  const nav=document.querySelector(".stepper");nav.hidden=MODE==="re"||MODE==="qr";
+  if(MODE==="re")$("topLabel").textContent="4주 후 재진단";if(MODE==="qr")$("topLabel").textContent="강사용 수업 QR";
+  if(MODE==="12"){$("nav3").title=$("nav4").title="다음 QR에서 이어집니다"}
+}
+function render(){
+  header();
+  const v=ST.view;
+  if(v==="home")renderHome();
+  else if(v==="s1")renderKossPage();
+  else if(v==="s1r")renderKossResult();
+  else if(v==="s2")renderDiscEntry();
+  else if(v==="s2r")renderDiscResult();
+  else if(v==="s3")renderStep3();
+  else if(v==="s4")renderStep4();
+  save();keepCarry();
+}
+const sampleFlag=()=>ST.sample?`<p class="sample-flag">강사 시연용 예시 결과입니다. 실제 교육생의 응답이 아닙니다.</p>`:"";
+
+/* ---------------- 시작 화면 (QR 접속) ---------------- */
+function renderHome(){
+  if(MODE==="34")return renderHome34();if(MODE==="qr")return renderQR();if(MODE==="re")ensureBase();
+  const RE=MODE==="re",M12=MODE==="12";
+  const intro=RE?`<section class="card">
+    <p class="kicker">4주 후 재진단 · KOSS-SF1 26문항 · 약 8분</p>
+    <h1>4주 동안 무엇이<br>달라졌을까요?</h1>
+    <p>처음 했던 직무스트레스 자가점검을 다시 하고, 처음 결과와 영역별로 비교합니다. STEP 3에서 정한 실천이 일터 요인에 어떤 변화를 주었는지 살펴보세요.</p>
+    ${baseBlock()}
+  </section>`:`<section class="card">
+    <p class="kicker">QR 접속 · 참여형 활동 · ${M12?"오늘은 STEP 1·2까지":"약 20분"}</p>
+    <h1>나의 직무스트레스,<br>4단계로 살펴보기</h1>
+    <p>일터의 어떤 요인이 나에게 부담을 주는지 확인하고, 내가 스트레스에 어떻게 반응하는지 이해한 뒤, 나와 동료에게 맞는 관리방법을 찾습니다.</p>
+    <div class="steps4">
+      <div><b>STEP 1</b><em>나의 직무스트레스 확인</em><span>KOSHA GUIDE E-G-2-2025 KOSS-SF1 26문항 · 약 8분</span></div>
+      <div><b>STEP 2</b><em>나의 스트레스 반응 이해</em><span>종이 DISC 검사지 점수 입력 · 약 10분</span></div>
+      <div${M12?' class="later"':""}><b>STEP 3</b><em>나에게 맞는 관리방법</em><span>개인별 대처방법과 4주 행동계획</span></div>
+      <div${M12?' class="later"':""}><b>STEP 4</b><em>관리감독자로서 동료 이해</em><span>유형별 스트레스 반응과 지원 방법</span></div>
+    </div>
+  </section>`;
+  app.innerHTML=`${intro}
+  <form class="card" id="infoForm" novalidate>
+    <h2>시작 전 선택</h2>
+    <fieldset><legend>성별 <span class="muted small">(직무스트레스 참고치가 남녀별로 다릅니다)</span></legend>
+      <div class="seg">
+        <label><input type="radio" name="g" id="g-m" value="m" ${ST.gender==="m"?"checked":""}><span>남성</span></label>
+        <label><input type="radio" name="g" id="g-f" value="f" ${ST.gender==="f"?"checked":""}><span>여성</span></label>
+      </div><p class="err" id="gErr" hidden>성별을 선택해 주세요.</p>
+    </fieldset>
+    <fieldset><legend>나의 역할 <span class="muted small">(STEP 3·4 내용이 달라집니다)</span></legend>
+      <div class="seg">
+        <label><input type="radio" name="r" id="r-w" value="w" ${ST.role==="w"?"checked":""}><span>근로자</span></label>
+        <label><input type="radio" name="r" id="r-s" value="s" ${ST.role==="s"?"checked":""}><span>관리감독자</span></label>
+      </div><p class="err" id="rErr" hidden>역할을 선택해 주세요.</p>
+    </fieldset>
+    <fieldset><legend><label for="d">점검 날짜 (한국시간)</label></legend>
+      <input type="date" id="d" value="${esc(ST.date)}"><p class="err" id="dErr" hidden>날짜를 선택해 주세요.</p>
+    </fieldset>
+    <p class="notice">이름이나 회사명은 묻지 않습니다. 응답은 이 휴대폰 안에서만 계산되고 어디에도 전송되지 않습니다. 다음 단계 QR과 4주 후 재진단에서 이어 쓸 수 있도록 결과는 이 휴대폰 브라우저에만 보관됩니다. 최근 1개월의 내 모습을 떠올리며 솔직하게 답해 주세요.</p>
+    <div class="row">
+      <button class="btn" type="submit">${kossDone()?(RE?"재진단 결과 보기":"이어서 하기"):(RE?"재진단 시작하기":"STEP 1 시작하기")}</button>
+      ${RE?"":`<button class="btn ghost" type="button" id="btnSample">강사 시연용 예시 결과 보기</button>`}
+    </div>
+    ${(ST.kAns.some(Boolean)||dcStarted())?`<button class="btn ghost" type="button" id="btnReset">${RE?"재진단 응답 지우기":"새 교육생으로 시작 (응답 모두 지우기)"}</button>`:""}
+    ${RE?"":`<p class="small muted">이 휴대폰에 남은 결과까지 지우려면 <button class="linkish" type="button" id="btnWipe">저장된 결과 모두 지우기</button></p>`}
+  </form>
+  ${MODE==="all"?`<p class="small muted noprint" style="text-align:center"><a href="${linkFor("qr")}">강사용 수업 QR 만들기</a></p>`:""}`;
+  if(RE)wireBase();
+  const f=$("infoForm");
+  f.addEventListener("change",e=>{
+    if(e.target.name==="g"){ST.gender=e.target.value;$("gErr").hidden=true}
+    if(e.target.name==="r"){ST.role=e.target.value;$("rErr").hidden=true}
+    save();header();
+  });
+  $("d").addEventListener("input",e=>{ST.date=e.target.value;save();header()});
+  f.addEventListener("submit",e=>{e.preventDefault();
+    let ok=true;
+    if(!ST.gender){$("gErr").hidden=false;ok=false}
+    if(!ST.role){$("rErr").hidden=false;ok=false}
+    if(!ST.date){$("dErr").hidden=false;ok=false}
+    if(!ok){toast("성별, 역할, 날짜를 먼저 선택해 주세요.");return}
+    if(RE){go(kossDone()?"s1r":"s1");return}
+    if(MODE==="12"){go(kossDone()?(discDone()?"s2r":dcStarted()?"s2":"s1r"):"s1");return}
+    if(kossDone()&&discDone())go("s3");else if(kossDone())go(dcStarted()?"s2":"s1r");else go("s1");
+  });
+  if($("btnSample"))$("btnSample").addEventListener("click",()=>{
+    const keepG=ST.gender||"m",keepR=ST.role||"s";
+    ST=fresh();ST.gender=keepG;ST.role=keepR;ST.sample=true;
+    ST.kAns=KOSS_SAMPLE.slice();ST.dc=JSON.parse(JSON.stringify(DISC_SAMPLE_DC));
+    go("s1r");
+  });
+  const r=$("btnReset");if(r)r.addEventListener("click",()=>{ST=fresh();save();render();toast("응답을 모두 지웠습니다.")});
+  const w=$("btnWipe");if(w)w.addEventListener("click",()=>{carryClear();ST=fresh();save();render();toast("이 휴대폰에 저장된 결과를 모두 지웠습니다.")});
+}
+
+/* ---------------- 4주 후 재진단: 처음 결과 ---------------- */
+function ensureBase(){
+  if(ST.base)return;const c=carryGet();
+  if(c.base&&Array.isArray(c.base.k)&&c.base.k.length===26){ST.base={g:c.base.g,r:c.base.r,d:c.base.d,k:c.base.k.slice(),from:"auto"};
+    if(!ST.gender)ST.gender=c.base.g;if(!ST.role)ST.role=c.base.r;save()}
+}
+const dotD=d=>d?d.replace(/-/g,".")+".":"날짜 모름";
+function baseBlock(){
+  if(ST.base){const R=scoreOf(ST.base.k,ST.gender||ST.base.g);
+    return`<div class="loaded"><b>처음 결과를 찾았어요.</b> ${dotD(ST.base.d)} 점검 · 총점 ${f1(R.total)}점 (${LV[R.tlv]})${ST.base.from==="code"?" · 결과 코드로 불러옴":""}</div>
+    <details><summary>다른 결과 코드로 바꾸기</summary>${codeForm("baseForm","처음 결과 코드")}</details>`}
+  return`<p class="notice">이 휴대폰에서 처음 결과를 찾지 못했어요. 처음 점검 때 받은 <b>결과 코드</b>(결과 화면이나 PDF 첫 장)를 넣으면 비교해 드려요. 코드가 없어도 재진단은 할 수 있어요.</p>${codeForm("baseForm","처음 결과 코드")}`;
+}
+const codeForm=(id,label)=>`<form id="${id}" class="codebox" novalidate><label for="${id}In"><b>${label}</b></label><input class="codein" type="text" id="${id}In" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="latin" placeholder="예: MS-2333…-SA2B25777-261031"><p class="err" id="${id}Err" hidden></p><button class="btn ghost" type="submit">코드로 불러오기</button></form>`;
+function wireCodeForm(id,onOk){const f=$(id);if(!f)return;f.addEventListener("submit",e=>{e.preventDefault();const r=parseCode($(id+"In").value);const er=$(id+"Err");
+  if(r.err){er.textContent=r.err;er.hidden=false;return}const msg=onOk(r);if(msg){er.textContent=msg;er.hidden=false}})}
+function wireBase(){wireCodeForm("baseForm",r=>{ST.base={g:r.g,r:r.r,d:r.d,k:r.k,from:"code"};if(!ST.gender)ST.gender=r.g;if(!ST.role&&r.r)ST.role=r.r;save();render();toast("처음 결과를 불러왔어요.")})}
+
+/* ---------------- STEP 3·4 수업용 링크 시작 화면 ---------------- */
+function loadFromCarry(){const c=carryGet().base;
+  if(c&&Array.isArray(c.k)&&c.k.length===26&&Array.isArray(c.dd)&&c.dd.length===8&&!dcCheck(dcFrom(c.dd))){ST=Object.assign(fresh(),{gender:c.g,role:c.r,date:c.d||todayKST(),kAns:c.k.slice(),dc:dcFrom(c.dd),loaded:"auto"});save();return true}
+  return false}
+function renderHome34(){
+  const ready=kossDone()&&discDone()&&ST.gender&&ST.role;
+  let sum="";if(ready){const {R}=kossResult();const r=discResult();sum=`<div class="loaded"><b>${ST.loaded==="code"?"결과 코드로 불러왔어요.":ST.sample?"강사 시연용 예시 결과예요.":"앞 단계 결과를 이 휴대폰에서 불러왔어요."}</b><br>${dotD(ST.date)} 점검 · ${ST.gender==="f"?"여성":"남성"} · ${ST.role==="s"?"관리감독자":"근로자"}<br>STEP 1 총점 ${f1(R.total)}점 (${LV[R.tlv]}) · STEP 2 ${r.primary.join("·")}${r.primary.length>1?" 복합형":"형"}</div>`}
+  app.innerHTML=`<section class="card">
+    <p class="kicker">QR 접속 · STEP 3·4 · 약 15분</p>
+    <h1>나에게 맞는 관리방법과<br>동료 이해하기</h1>
+    <p>앞에서 확인한 직무스트레스 결과(STEP 1)와 스트레스 반응 유형(STEP 2)으로 나의 실천 방법을 고르고, 동료를 이해하는 방법을 살펴봅니다.</p>
+    ${ready?sum+`<div class="row"><button class="btn" type="button" id="go3">STEP 3 시작하기</button></div>`:`<p class="notice">이 휴대폰에서 STEP 1·2 결과를 찾지 못했어요. STEP 2 결과 화면에 있던 <b>결과 코드</b>를 넣거나, 강사님께 STEP 1·2 QR을 다시 보여달라고 해 주세요.</p>`}
+  </section>
+  <section class="card">${ready?`<details><summary>다른 결과 코드로 바꾸기</summary>${codeForm("c34","결과 코드")}</details>`:codeForm("c34","결과 코드")}
+    ${ready?"":`<a class="btn ghost" href="${linkFor("12")}">STEP 1·2부터 하기</a>`}</section>`;
+  if(ready)$("go3").addEventListener("click",()=>go("s3"));
+  wireCodeForm("c34",r=>{if(!r.dd)return"DISC 결과가 없는 코드예요(KOSS 자가점검만 한 코드). STEP 1·2 QR로 DISC를 먼저 해 주세요.";
+    ST=Object.assign(fresh(),{gender:r.g,role:r.r||"w",date:r.d||todayKST(),kAns:r.k,dc:dcFrom(r.dd),loaded:"code"});save();go("s3");toast("결과를 불러왔어요.")});
+}
+
+/* ---------------- 강사용 수업 QR ---------------- */
+const QRLINKS=[["12","STEP 1·2","직무스트레스 확인과 DISC 행동유형. 수업 시작할 때 띄워 주세요."],["34","STEP 3·4","관리방법 찾기와 동료 이해. STEP 2까지 마친 뒤 띄워 주세요."],["re","4주 후 재진단","KOSS만 다시 하고 처음 결과와 비교해요. 수업 끝에 안내하거나 문자로 보내 주세요."]];
+const QBKEY="stress-platform-qr-base";
+function loadScript(urls){return new Promise((ok,no)=>{const tryI=i=>{if(i>=urls.length)return no(new Error("load"));const s=document.createElement("script");s.src=urls[i];s.onload=()=>ok();s.onerror=()=>{s.remove();tryI(i+1)};document.head.appendChild(s)};tryI(0)})}
+function qrSvg(u){const q=qrcode(0,"M");q.addData(u,"Byte");q.make();return q.createSvgTag({cellSize:8,margin:2,scalable:true,alt:"QR",title:u})}
+function renderQR(){
+  let base="";try{base=localStorage.getItem(QBKEY)||""}catch(e){}
+  if(!base&&!IN_FRAME)base=location.href.split(/[?#]/)[0];
+  app.innerHTML=`<section class="card">
+    <p class="kicker">강사용 · 수업 진도에 맞춰 한 장씩</p>
+    <h1>단계별 수업 QR</h1>
+    <p>교육생이 같은 휴대폰으로 찍으면 앞 단계 결과가 자동으로 이어집니다. 다른 휴대폰으로 바꾼 교육생은 STEP 2 결과 화면의 결과 코드로 이어갈 수 있어요.</p>
+    <label for="qbase"><b>교육생이 접속할 사이트 주소</b></label>
+    <input class="codein" style="text-transform:none" type="url" id="qbase" value="${esc(base)}" placeholder="https://…/index.html" autocomplete="off" spellcheck="false">
+    <p class="small muted">${IN_FRAME?"지금은 미리보기 화면이라 교육생이 열 수 없는 주소예요. 사이트를 올린 실제 주소를 넣어 주세요.":"보통은 그대로 두면 됩니다. 주소를 바꾸면 QR이 바로 다시 만들어지고, 이 기기에 기억됩니다."}</p>
+  </section>
+  <div class="qrgrid">${QRLINKS.map(([m,h,d])=>`<section class="card"><h2>${h}</h2><p class="small">${d}</p><div class="qrbox" id="qr-${m}"></div><p class="qrurl" id="qu-${m}"></p><div class="row"><button class="btn" type="button" data-big="${m}">크게 띄우기</button><button class="btn ghost" type="button" data-copy="${m}">링크 복사</button></div></section>`).join("")}</div>
+  <p class="small muted" style="text-align:center"><a href="${IN_FRAME?"#all":location.href.split(/[?#]/)[0]}">전체 4단계 화면으로</a></p>`;
+  const urlOf=m=>{const b=$("qbase").value.trim().split(/[?#]/)[0];return b?b+"?m="+m:""};
+  let libOk=false;
+  const paint=()=>{QRLINKS.forEach(([m])=>{const u=urlOf(m);$("qu-"+m).textContent=u||"주소를 먼저 넣어 주세요.";$("qr-"+m).innerHTML=libOk&&u?qrSvg(u):(u?'<p class="small" style="color:#333">QR 도구를 불러오는 중…</p>':"")})};
+  paint();
+  loadScript(["https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js","https://unpkg.com/qrcode-generator@1.4.4/qrcode.js"]).then(()=>{libOk=true;paint()}).catch(()=>QRLINKS.forEach(([m])=>{$("qr-"+m).innerHTML='<p class="small" style="color:#333">QR 도구를 불러오지 못했어요. 인터넷 연결을 확인해 주세요. 링크 복사는 쓸 수 있어요.</p>'}));
+  $("qbase").addEventListener("input",()=>{try{localStorage.setItem(QBKEY,$("qbase").value.trim())}catch(e){}paint()});
+  app.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",()=>{const u=urlOf(b.dataset.copy);if(!u){toast("주소를 먼저 넣어 주세요.");return}navigator.clipboard.writeText(u).then(()=>toast("링크를 복사했어요.")).catch(()=>toast(u))}));
+  app.querySelectorAll("[data-big]").forEach(b=>b.addEventListener("click",()=>{const m=b.dataset.big;const u=urlOf(m);if(!u||!libOk){toast("주소와 QR이 준비된 뒤 눌러 주세요.");return}
+    const h=QRLINKS.find(x=>x[0]===m)[1];const o=document.createElement("div");o.className="qrfull";o.setAttribute("role","dialog");o.setAttribute("aria-label",h+" QR");
+    o.innerHTML=`<h2>${h} · 휴대폰 카메라로 찍어 주세요</h2><div class="qrbox">${qrSvg(u)}</div><p style="margin:0;color:#444;word-break:break-all">${esc(u)}</p><button type="button">닫기</button>`;
+    const close=()=>{o.remove();document.removeEventListener("keydown",k)};const k=e=>{if(e.key==="Escape")close()};
+    o.querySelector("button").addEventListener("click",close);document.addEventListener("keydown",k);document.body.appendChild(o);o.querySelector("button").focus()}));
+}
+
+/* ---------------- STEP 1 · KOSS 문항 ---------------- */
+const PER=6,KPAGES=Math.ceil(Q.length/PER);
+function renderKossPage(){
+  const p=Math.min(Math.max(ST.kPage,1),KPAGES);ST.kPage=p;
+  const from=(p-1)*PER,to=Math.min(p*PER,Q.length);
+  const answered=ST.kAns.filter(Boolean).length;
+  let h=`<section class="card">
+    <p class="kicker">STEP 1 · 나의 직무스트레스 확인 · ${esc(CFG.name)}(${esc(CFG.code)})</p>
+    <h2>최근 1개월, 내 일터는 어땠나요?</h2>
+    <div class="prog"><div class="bar"><i style="width:${Math.round(answered/Q.length*100)}%"></i></div><b>${answered} / ${Q.length}</b></div>
+    <p class="small muted">${p}장 / ${KPAGES}장 · 6문항씩 넘깁니다.</p>
+  </section><form id="pf" novalidate style="display:flex;flex-direction:column;gap:12px">`;
+  for(let i=from;i<to;i++){
+    h+=`<fieldset class="q card" id="q${i}"><legend class="q-head"><span class="q-no">${String(i+1).padStart(2,"0")}</span><span><span class="q-dom">${DOM_OF[i]}</span>${esc(Q[i].t)}</span></legend>
+      <div class="opt">${OPTS.map((o,j)=>`<label><input type="radio" name="a${i}" id="a${i}-${j}" value="${j}" ${ST.kAns[i]===j+1?"checked":""}><span>${o}</span></label>`).join("")}</div>
+      <p class="q-miss">이 문항에 아직 답하지 않았어요.</p></fieldset>`;
+  }
+  h+=`<div class="row"><button class="btn ghost" type="button" id="prev">이전</button><button class="btn" type="submit">${p===KPAGES?"STEP 1 결과 보기":"다음 장"}</button></div></form>`;
+  app.innerHTML=h;
+  const f=$("pf");
+  f.addEventListener("change",e=>{
+    const m=/^a(\d+)$/.exec(e.target.name);if(!m)return;
+    const i=+m[1];ST.kAns[i]=+e.target.value+1;ST.sample=false;save();
+    $("q"+i).classList.remove("missing");
+    const next=[...Array(to-from).keys()].map(k=>k+from).find(k=>k>i&&!ST.kAns[k]);
+    if(next!==undefined)setTimeout(()=>{const el=$("q"+next);if(el)el.scrollIntoView({behavior:"smooth",block:"center"})},150);
+  });
+  f.addEventListener("submit",e=>{e.preventDefault();
+    const miss=[];for(let i=from;i<to;i++)if(!ST.kAns[i])miss.push(i);
+    document.querySelectorAll(".q").forEach(el=>el.classList.remove("missing"));
+    if(miss.length){miss.forEach(i=>$("q"+i).classList.add("missing"));toast(miss.map(i=>(i+1)+"번").join(", ")+" 문항이 비어 있어요.");$("q"+miss[0]).scrollIntoView({behavior:"smooth",block:"center"});return}
+    if(p<KPAGES){ST.kPage=p+1;render();top0();return}
+    const left=ST.kAns.map((a,i)=>a?-1:i).filter(i=>i>=0);
+    if(left.length){toast(left.map(i=>(i+1)+"번").join(", ")+" 문항이 비어 있어요. 해당 장으로 이동합니다.");ST.kPage=Math.floor(left[0]/PER)+1;render();top0();return}
+    go("s1r");
+  });
+  $("prev").addEventListener("click",()=>{if(p>1){ST.kPage=p-1;render();top0()}else go("home")});
+}
+
+/* ---------------- STEP 1 · KOSS 결과 ---------------- */
+function renderKossResult(){
+  const {R,P,PG}=kossResult();const {ds,total,tref,tlv}=R;
+  const gtxt=ST.gender==="f"?"여성":"남성";
+  const C=2*Math.PI*44,frac=Math.min(total,100)/100;
+  const ringCol=tlv==="hi"?"var(--warn)":tlv==="mid"?"var(--mid)":"var(--accent)";
+  const RE=MODE==="re",OB=RE&&ST.base?scoreOf(ST.base.k,ST.gender):null;
+  let radar=radarSVG(ds);
+  if(OB){const W=500,H=420,cx=W/2,cy=H/2+4,Rr=140,n=ds.length;const pts=OB.ds.map((d,i)=>{const a=-Math.PI/2+i*2*Math.PI/n,v=Math.max(d.v,2);return(cx+Math.cos(a)*Rr*v/100).toFixed(1)+","+(cy+Math.sin(a)*Rr*v/100).toFixed(1)}).join(" ");
+    radar=radar.replace("</svg>",`<polygon points="${pts}" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-dasharray="6 4" stroke-linejoin="round"/></svg>`).replace('aria-label="','aria-label="처음 결과(점선)와 비교한 ')}
+  const chg=(a,b)=>{const x=Math.round((b-a)*10)/10;return x>0?`<span class="chg-up">▲ ${f1(x)}</span>`:x<0?`<span class="chg-dn">▼ ${f1(-x)}</span>`:`<span class="muted">변화 없음</span>`};
+  const cmp=OB?(()=>{const dn=ds.filter((d,i)=>d.v<OB.ds[i].v).length,up=ds.filter((d,i)=>d.v>OB.ds[i].v).length;
+    return`<section class="card">
+    <h2>처음 결과와 비교</h2>
+    <p>${dotD(ST.base.d)} → ${dotD(ST.date)} · 총점 ${f1(OB.total)} → <b>${f1(total)}</b> ${chg(OB.total,total)}</p>
+    <p class="small muted">점수가 <b>낮아질수록</b> 그 일터 요인의 스트레스가 줄어든 것입니다. 낮아진 영역 ${dn}개, 높아진 영역 ${up}개.</p>
+    <div class="tblwrap"><table><thead><tr><th style="text-align:left">영역</th><th>처음</th><th>지금</th><th>변화</th></tr></thead><tbody>
+    ${ds.map((d,i)=>`<tr><td style="text-align:left">${d.k}</td><td>${f1(OB.ds[i].v)}<br><span class="pill ${OB.ds[i].lv}">${LV[OB.ds[i].lv]}</span></td><td><b>${f1(d.v)}</b><br><span class="pill ${d.lv}">${LV[d.lv]}</span></td><td>${chg(OB.ds[i].v,d.v)}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="disclaim">${up?"다시 높아진 영역은 혼자 해결하기 어려운 일터 요인일 수 있어요. 관리감독자나 동료와 이야기하고, 필요하면 근로자건강센터 같은 전문기관의 도움을 받아 보세요.":"좋아진 방향을 유지하도록 STEP 3에서 정한 실천을 이어가 보세요."}</p>
+  </section>`})():"";
+  app.innerHTML=`${sampleFlag()}
+  <section class="card">
+    <p class="kicker">${RE?"4주 후 재진단 결과":"STEP 1 결과"} · ${esc(CFG.name)}(${esc(CFG.code)}) · ${gtxt} 참고치</p>
+    <h1>어떤 직무요인이 나에게 부담을 주고 있을까요?</h1>
+    <div class="score-hero">
+      <svg class="ring" viewBox="0 0 108 108" aria-hidden="true"><circle cx="54" cy="54" r="44" fill="none" stroke="var(--line)" stroke-width="10"/><circle cx="54" cy="54" r="44" fill="none" stroke="${ringCol}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(C*frac).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 54 54)"/><text x="54" y="60" text-anchor="middle" font-size="22" font-weight="600">${f1(total)}</text></svg>
+      <div class="t">
+        <p class="small muted">총점 (8개 영역 평균, 100점 환산)</p>
+        <p><span class="pill ${tlv}">${LV[tlv]}</span></p>
+        <p class="small muted">${gtxt} 참고치: 중앙값 <b>${f1(tref[1])}</b>점, 상위25%(고위험) <b>${f1(tref[2])}</b>점 이상. 점수가 높을수록 그 요인의 스트레스가 높습니다.</p>
+      </div>
+    </div>
+  </section>
+  ${cmp}
+  <section class="card">
+    <h2>8개 영역 한눈에 보기</h2>
+    <div class="tblwrap">${radar}</div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>${OB?"지금 점수":"나의 점수"}</span>${OB?`<span><i class="old"></i>처음 점수(점선)</span>`:""}<span><i style="background:var(--ok-soft);border:1px solid var(--ok)"></i>정상(중앙값 이하)</span><span><i style="background:var(--mid-soft);border:1px solid var(--mid)"></i>경계</span><span><i style="background:var(--warn-soft);border:1px solid var(--warn)"></i>고위험(상위25%)</span></div>
+    <p class="small muted">내 꼭짓점이 빨간 띠까지 나가면 한국 ${gtxt} 근로자 상위 25%에 해당하는 영역입니다. 진단이 아니라 다른 근로자와 비교한 상대적인 위치입니다.</p>
+  </section>
+  <section class="card">
+    <h2>영역별 점수</h2>
+    <div class="dom">${ds.map(d=>{const[a,b,dd]=d.ref;return`<div class="dom-row"><span class="nm">${d.k} <span class="pill ${d.lv}">${LV[d.lv]}</span></span><span class="val">${f1(d.v)}</span><div class="zones" aria-hidden="true"><i class="z-ok" style="width:${b}%"></i><i class="z-mid" style="width:${dd-b}%"></i><i class="z-hi" style="width:${100-dd}%"></i><b style="left:${Math.min(Math.max(d.v,1),99)}%"></b></div><p class="desc">${d.desc} · 중앙값 ${f1(b)} / 고위험 ${f1(dd)} 이상</p></div>`}).join("")}</div>
+  </section>
+  <section class="card">
+    <h2>먼저 살펴볼 일터 요인</h2>
+    <p>${P.hi.length?`고위험 영역 <b>${P.hi.map(d=>d.k).join(", ")}</b>`:"고위험 영역은 없습니다"}${P.mid.length?`, 경계 영역 <b>${P.mid.map(d=>d.k).join(", ")}</b>`:""}.</p>
+    <ol>${PG.focus.map(d=>`<li><b>${d.k}</b> ${f1(d.v)}점 · ${LV[d.lv]} <span class="note">(상위25% 기준 ${f1(d.ref[2])})</span></li>`).join("")}</ol>
+    <p class="disclaim">높게 나온 영역은 "내가 약하다"가 아니라 "일터의 이 요인이 나에게 부담이 된다"는 뜻입니다. 이 요인들은 STEP 3과 STEP 4에서 개인·조직 차원의 관리방법으로 이어집니다.</p>
+  </section>
+  ${RE?(ST.base?"":`<section class="card"><h2>처음 결과와 비교하려면</h2>${codeForm("baseForm","처음 결과 코드")}</section>`):`<section class="class-act"><h3>강의실 활동 (2분)</h3><p>내 8각형에서 가장 바깥으로 나간 꼭짓점 1개를 옆 사람에게 말해 보세요. 점수는 말하지 않아도 됩니다.</p></section>`}
+  <details class="noprint"><summary>참고치 표 (${gtxt}) 보기</summary>
+    <div class="tblwrap"><table><thead><tr><th>영역</th><th>내 점수</th><th>하위25%</th><th>하위26~50%</th><th>상위26~50%<br>경계</th><th>상위25%<br>고위험</th></tr></thead><tbody>
+    ${[...ds,{k:"총점",v:total,ref:tref,lv:tlv,band:R.tband}].map(d=>{const t=rangeTxt(d.ref);const bg=["var(--ok-soft)","var(--ok-soft)","var(--mid-soft)","var(--warn-soft)"];return`<tr><td>${d.k}</td><td>${f1(d.v)}</td>${t.map((x,i)=>`<td style="${i===d.band?"background:"+bg[i]+";font-weight:700":""}">${x}</td>`).join("")}</tr>`}).join("")}
+    </tbody></table></div><p class="note">출처: ${esc(CFG.src)}</p></details>
+  <div class="row noprint">${MODE==="34"?"":`<button class="btn ghost" type="button" id="edit">응답 고치기</button>`}${RE?"":`<button class="btn" type="button" id="next">STEP 2 · 나의 스트레스 반응 ${MODE==="34"?"결과 보기":"알아보기"}</button>`}</div>`;
+  if($("edit"))$("edit").addEventListener("click",()=>{ST.kPage=1;go("s1")});
+  if($("next"))$("next").addEventListener("click",()=>go(discDone()?"s2r":"s2"));
+  if(RE&&!ST.base)wireBase();
+}
+
+/* ---------------- STEP 2 · DISC 문항 ---------------- */
+function renderDiscEntry(){
+  const dc=ST.dc;
+  const cell=(k,tp)=>`<input class="dcin" type="number" inputmode="numeric" min="0" max="28" step="1" id="${k}-${tp}" data-k="${k}" data-t="${tp}" value="${esc(dc[k][tp]??"")}" aria-label="${tp} ${k==="most"?"최고치":"최소치"} 개수">`;
+  app.innerHTML=`<section class="card">
+    <p class="kicker">STEP 2 · 나의 스트레스 반응 이해 · DISC 행동유형</p>
+    <h1>종이 검사지 점수를<br>옮겨 적어 주세요</h1>
+    <p>강사님이 나눠 드린 DISC 검사지를 먼저 끝까지 해 주세요. 그다음 <b>유형별 집계표</b>의 최고치와 최소치를 N까지 그대로 옮겨 적으면 차이와 단계를 계산해 드려요.</p>
+    <p class="small muted">N은 합계 28을 맞추는 데만 쓰고, 차이는 계산하지 않아요.</p>
+  </section>
+  <form class="card" id="dcForm" novalidate>
+    <div class="tblwrap"><table class="dctbl"><thead><tr><th style="text-align:left">유형</th><th>최고치</th><th>최소치</th><th>차이</th></tr></thead><tbody>
+    ${TYPES.map(tp=>`<tr><td class="type" style="text-align:left"><span class="dotc" style="background:${TYPE_COLOR(tp)}"></span>${tp} <span class="tn">${TYPE_NAME[tp]}</span></td><td>${cell("most",tp)}</td><td>${cell("least",tp)}</td><td><b id="df-${tp}">–</b></td></tr>`).join("")}
+    <tr><td class="type muted" style="text-align:left">N <span class="tn">미반영</span></td><td>${cell("most","N")}</td><td>${cell("least","N")}</td><td class="small muted">계산하지 않음</td></tr>
+    <tr><td class="type muted" style="text-align:left">합계</td><td id="sum-most" class="muted">–</td><td id="sum-least" class="muted">–</td><td></td></tr>
+    </tbody></table></div>
+    <p class="err" id="dcErr" hidden></p>
+    <div class="row"><button class="btn ghost" type="button" id="dPrev">STEP 1 결과로</button><button class="btn" type="submit" id="dNext">STEP 2 결과 보기</button></div>
+  </form>`;
+  const paint=()=>{TYPES.forEach(tp=>{const m=dc.most[tp],l=dc.least[tp];$("df-"+tp).textContent=okNum(m)&&okNum(l)?sign(m-l):"–"});
+    ["most","least"].forEach(k=>{const v=T5.map(tp=>dc[k][tp]===undefined?"":dc[k][tp]);const s=v.reduce((a,x)=>a+(okNum(x)?+x:0),0);const el=$("sum-"+k);el.textContent=v.some(x=>x!=="")?s+" / 28":"–";el.classList.toggle("sum-ok",s===DISC_N&&v.every(okNum))})};
+  paint();
+  app.querySelectorAll(".dcin").forEach(inp=>inp.addEventListener("input",()=>{const v=inp.value.trim();dc[inp.dataset.k][inp.dataset.t]=v===""?"":Number(v);ST.sample=false;save();$("dcErr").hidden=true;inp.classList.toggle("bad",v!==""&&!okNum(v));paint()}));
+  $("dPrev").addEventListener("click",()=>go("s1r"));
+  $("dcForm").addEventListener("submit",e=>{e.preventDefault();const m=dcCheck(dc);if(m){$("dcErr").textContent=m;$("dcErr").hidden=false;toast(m);return}go("s2r")});
+}
+
+function renderDiscResult(){
+  const r=discResult();const multi=r.primary.length>1;const label=r.primary.join("·");
+  app.innerHTML=`${sampleFlag()}
+  <section class="card">
+    <p class="kicker">STEP 2 결과 · DISC 행동유형</p>
+    <div class="hero">
+      <div class="badge" style="background:${multi?"var(--accent)":TYPE_COLOR(r.primary[0])};font-size:${multi?(r.primary.length>2?"1.5rem":"1.9rem"):""}">${label}</div>
+      <div class="t">
+        <h1>${multi?label+" 복합형 ("+r.primary.map(t=>TYPE_NAME[t]).join(" + ")+")":r.primary[0]+"형 · "+TYPE_NAME[r.primary[0]]}</h1>
+        <p class="muted">${multi?r.primary.join("형, ")+"형이 똑같이 가장 높은 "+r.topStage+"단계입니다. 한 유형으로 나누지 않고 두 특성을 함께 가진 것으로 봅니다.":"네 유형 중 단계가 가장 높습니다("+r.topStage+"단계, 차이점수 "+sign(r.diff[r.primary[0]])+")."}</p>
+      </div>
+    </div>
+    <p class="disclaim">성격을 진단하거나 평가하는 결과가 아니라, 현재의 행동 경향을 이해하기 위한 자기이해 자료입니다. 실제 행동은 상황, 역할, 환경에 따라 달라질 수 있습니다.</p>
+  </section>
+  <section class="card">
+    <h2>나는 스트레스 상황에서 어떻게 반응할까요?</h2>
+    ${r.primary.map(t=>`<div class="sec"><div class="wide"><h3 style="color:${TYPE_COLOR(t)}">${t}형 · ${TYPE_NAME[t]}</h3><p>${INFO[t].feature}</p></div><div><h3>스트레스 상황에서 나타날 수 있는 반응</h3><ul>${INFO[t].stress.map(x=>`<li>${x}</li>`).join("")}</ul></div><div><h3>업무에서 주의할 점</h3><ul>${INFO[t].caution.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>`).join("")}
+  </section>
+  <section class="card">
+    <h2>단계 그래프</h2>
+    <p class="small muted">점 위 숫자는 차이점수(최고 − 최소), 괄호는 단계입니다.</p>
+    <div id="stageChart"></div>
+  </section>
+  <section class="card">
+    <h2>차이점수 비교</h2>
+    <div id="barChart"></div>
+    <div class="tblwrap"><table><thead><tr><th style="text-align:left">유형</th><th>최고</th><th>최소</th><th>차이점수</th><th>단계</th></tr></thead><tbody>
+      ${TYPES.map(t=>`<tr class="${r.primary.includes(t)?"top":""}"><td class="type"><span class="dotc" style="background:${TYPE_COLOR(t)}"></span>${t} <span class="tn">${TYPE_NAME[t]}</span></td><td>${r.most[t]}</td><td>${r.least[t]}</td><td><b>${sign(r.diff[t])}</b></td><td><b>${r.stage[t]}</b></td></tr>`).join("")}
+      <tr><td class="type muted">N <span class="tn">미반영</span></td><td>${r.most.N}</td><td>${r.least.N}</td><td>–</td><td>–</td></tr>
+    </tbody></table></div>
+  </section>
+  <details><summary>내 유형 전체 해석 (강점·소통·관리감독자 활용)</summary><div style="display:flex;flex-direction:column;gap:14px">${r.primary.map(typeBlock).join("")}</div></details>
+  ${MODE==="12"?`<section class="card"><h2>STEP 1·2를 모두 마쳤어요</h2>
+    <p>STEP 3·4는 강사님이 다음 QR을 보여주실 때 <b>이 휴대폰으로 찍으면</b> 지금 결과가 자동으로 이어져요.</p>
+    ${ST.sample?"":codeBox("다른 휴대폰이나 다른 앱으로 열 때, 그리고 4주 후 재진단에서 처음 결과와 비교할 때 쓰는 코드예요. 캡처하거나 메모해 두세요.")}</section>
+  <div class="row noprint"><button class="btn ghost" type="button" id="edit">점수 고치기</button></div>`
+  :`${MODE==="34"||ST.sample?"":`<section class="card"><h2>나의 결과 코드</h2>${codeBox("4주 후 재진단에서 처음 결과와 비교할 때 쓰는 코드예요. 이름은 담기지 않아요.")}</section>`}
+  <div class="row noprint">${MODE==="34"?"":`<button class="btn ghost" type="button" id="edit">점수 고치기</button>`}<button class="btn" type="button" id="next">STEP 3 · 나에게 맞는 관리방법 찾기</button></div>`}`;
+  drawStageChart(r);drawBarChart(r);wireCode();
+  if($("edit"))$("edit").addEventListener("click",()=>go("s2"));
+  if($("next"))$("next").addEventListener("click",()=>go("s3"));
+}
+
+/* ---------------- STEP 3 · 관리방법 ---------------- */
+const BASICS=["수면·휴식 시간을 먼저 확보하기","1분 호흡: 어깨 힘을 빼고 편하게 들이쉰 뒤 조금 더 천천히 내쉬기","50분 일하면 5분 일어나 목·어깨 스트레칭하기","할 일을 긴급도·중요도로 나눠 3가지만 고르기","힘들 때 동료·상사·전문기관에 도움 요청하기"];
+function candidates(focus,primary){
+  const list=[];
+  focus.forEach(d=>TIPS[d.k].me.forEach(t=>list.push({tag:"일터 요인 · "+d.k,t})));
+  primary.forEach(p=>INFO[p].manage.forEach(t=>list.push({tag:"내 유형 · "+p+"형",t})));
+  BASICS.forEach(t=>list.push({tag:"기본 회복 습관",t}));
+  return list;
+}
+function renderStep3(){
+  const {R,P,PG}=kossResult();const r=discResult();const focus=PG.focus;const prim=r.primary;
+  const sup=ST.role==="s";
+  const cands=candidates(focus,prim);
+  ST.picks=ST.picks.filter(t=>cands.some(c=>c.t===t));
+  const groups=[...new Set(cands.map(c=>c.tag))];
+  app.innerHTML=`${sampleFlag()}
+  <section class="card">
+    <p class="kicker">STEP 3 · 개인별 대처방법과 행동전략</p>
+    <h1>나는 어떤 방법으로 스트레스를 관리할까요?</h1>
+    <div class="map">
+      <div><span class="kicker">STEP 1 · 부담을 주는 일터 요인</span>${focus.map(d=>`<p><b>${d.k}</b> <span class="pill ${d.lv}">${LV[d.lv]}</span></p>`).join("")}</div>
+      <div class="x" aria-hidden="true">×</div>
+      <div><span class="kicker">STEP 2 · 나의 반응 경향</span>${prim.map(t=>`<p><b style="color:${TYPE_COLOR(t)}">${t}형 · ${TYPE_NAME[t]}</b></p><ul class="small">${INFO[t].stress.map(x=>`<li>${x}</li>`).join("")}</ul>`).join("")}</div>
+    </div>
+    <p class="small muted">위의 반응 신호가 보이면 "지금 스트레스가 쌓이고 있구나" 하고 알아차리는 것이 관리의 시작입니다.</p>
+  </section>
+  <section class="card">
+    <h2>이번 주에 해볼 일 3가지 고르기 <span class="pill ok"><span id="pickCount">${ST.picks.length}</span>/3</span></h2>
+    <p class="small muted">일터 요인별 대처, 내 유형에 맞는 관리법, 기본 회복 습관 중에서 실제로 해볼 수 있는 것을 최대 3개 고르세요.</p>
+    <div class="picks">${groups.map(g=>`<div class="pickgrp"><h3>${esc(g)}</h3>${cands.filter(c=>c.tag===g).map(c=>{const id="pk"+cands.indexOf(c);const on=ST.picks.includes(c.t);return`<label class="chk${on?" on":""}" for="${id}"><input type="checkbox" id="${id}" data-t="${esc(c.t)}" ${on?"checked":""}><span>${esc(c.t)}</span></label>`}).join("")}</div>`).join("")}</div>
+  </section>
+  <section class="actcard" id="actcard">
+    <h2>나의 실천 카드</h2>
+    <div id="actBody"></div>
+  </section>
+  <section class="card">
+    <h2>4주 예방 프로그램</h2>
+    <p class="small muted">직무스트레스 예방 프로그램 업무 흐름도(KOSHA GUIDE E-G-2-2025 부록 2) 단계를 내 결과에 맞춰 만들었습니다. 시작일은 점검일 ${esc(ST.date)}입니다.</p>
+    <p class="who">4주 목표</p><ul class="goal">${PG.goals.map(t=>`<li>${t}</li>`).join("")}</ul>
+    <p class="who">주차별 실행계획</p>
+    <ul class="plan">${PG.rows.map(rw=>`<li><span class="pd">${rw[0]}</span><span>${esc(rw[1])}</span><span class="how">방법: ${esc(rw[2])}</span></li>`).join("")}</ul>
+    <details><summary>예방 프로그램 6단계 전체 보기</summary><div class="prog6">${PG.steps.map((s,i)=>`<div class="st"><span class="no">${i+1}</span><div class="body"><span class="stage">${s.stage}</span><h3>${s.title}</h3>${s.html}</div></div>`).join("")}</div></details>
+  </section>
+  <section class="card">
+    <h2>조직 차원의 개선방안</h2>
+    <p class="small muted">개인의 노력만으로 해결되지 않는 부분입니다. ${sup?"관리감독자로서 팀에서 먼저 시작할 수 있는 일입니다.":"관리감독자·회사에 요청할 수 있는 일입니다."}</p>
+    ${focus.map(d=>`<div><p class="who">${d.k} <span class="pill ${d.lv}">${LV[d.lv]}</span></p><ul>${TIPS[d.k].org.map(t=>`<li>${t}</li>`).join("")}</ul></div>`).join("")}
+    <p class="disclaim">건강한 생활습관이 과도한 업무량이나 부당한 대우를 대신 해결해 주지는 않습니다. 개인 대처는 조직 개선과 함께 쓸 때 효과적입니다.</p>
+  </section>
+  <section class="card">
+    <h3>도움받을 수 있는 곳</h3>
+    <div class="help"><b>근로자건강센터</b><span>직무스트레스 상담 무료 (안전보건공단 운영, 지역별 센터)</span><b>109</b><span>자살예방 상담전화 (24시간)</span><b>1577-0199</b><span>정신건강 위기상담 (24시간)</span></div>
+    <p class="note">이 결과는 자가점검용이며 진단이 아닙니다. 2주 이상 잠·식욕·의욕 변화가 계속되면 전문가 상담을 받아 보세요.</p>
+  </section>
+  ${pdfSection()}
+  <div class="row noprint"><button class="btn ghost" type="button" id="back">STEP 2 결과</button><button class="btn" type="button" id="next">STEP 4 · ${sup?"관리감독자로서 동료 이해하기":"동료와 서로 이해하기"}</button></div>`;
+  function paintCard(){
+    $("actBody").innerHTML=ST.picks.length?`<ol>${ST.picks.map(t=>`<li>${esc(t)}</li>`).join("")}</ol><p class="note">${fmtD(ST.date)}부터 시작해 4주 뒤 ${fmtD(addDays(ST.date,28))}에 같은 점검을 다시 해 보세요.</p>`:`<p class="muted">위에서 해볼 일을 고르면 여기에 모입니다.</p>`;
+  }
+  paintCard();
+  app.querySelectorAll(".chk input").forEach(c=>c.addEventListener("change",()=>{
+    const t=c.dataset.t;
+    if(c.checked){if(ST.picks.length>=3){c.checked=false;toast("3개까지 고를 수 있어요. 하나를 해제한 뒤 골라 주세요.");return}ST.picks.push(t)}
+    else ST.picks=ST.picks.filter(x=>x!==t);
+    c.closest(".chk").classList.toggle("on",c.checked);save();paintCard();$("pickCount").textContent=ST.picks.length;if(c.checked)toast("실천 카드에 담았어요 ("+ST.picks.length+"/3)");
+  }));
+  wirePdf();
+  $("back").addEventListener("click",()=>go("s2r"));
+  $("next").addEventListener("click",()=>go("s4"));
+}
+
+const REFS=[
+  {t:"KOSHA GUIDE E-G-2-2025 직무스트레스로 인한 건강장해 예방기술지원규정 (문항·참고치 별표 3·4, 예방 프로그램 부록 2)"},
+  {t:"DISC 행동유형 검사지"},
+  {t:"장세진 외 (2005). 한국인 직무 스트레스 측정도구의 개발 및 표준화.",l:"KOSS 개발 원논문",u:"https://doi.org/10.35371/kjoem.2005.17.4.297"},
+  {t:"WHO (2022).",l:"Guidelines on mental health at work",u:"https://www.who.int/publications/i/item/9789240053052"},
+  {t:"WHO·ILO (2022).",l:"Mental health at work: policy brief",u:"https://www.who.int/publications/i/item/9789240057944"}];
+/* ---------------- STEP 4 · 동료 이해 ---------------- */
+const SIX=["평소와 다른 피로·실수·갈등을 관찰한다","비난보다 사실과 작업조건을 질문한다","작업량·인력·시간·장비 상태를 확인한다","위험 시 작업을 멈추고 보고·조정한다","개선조치의 담당자와 기한을 정한다","조치가 실제로 작동하는지 확인한다"];
+const SIGNS={body:["수면 문제·지속적인 피로","두통·근육 긴장·소화 불편","심계항진·식욕 변화"],mind:["짜증·불안·의욕 저하","집중력·기억력 저하","실수·지각·결근 증가","동료와의 충돌·위험한 지름길 선택"]};
+function renderStep4(){
+  const {PG}=kossResult();const r=discResult();const mine=r.primary;const sup=ST.role==="s";
+  if(!TYPES.includes(ST.peer))ST.peer=TYPES.find(t=>!mine.includes(t))||"D";
+  const supStep=PG.steps.find(s=>s.stage==="관리감독자 추가 과제");
+  app.innerHTML=`${sampleFlag()}
+  <section class="card">
+    <p class="kicker">STEP 4 · 상대방의 행동유형 이해와 소통</p>
+    <h1>${sup?"구성원마다 다른 스트레스 반응을 어떻게 지원할까요?":"동료의 스트레스 반응을 어떻게 이해하고 도울까요?"}</h1>
+    <p>같은 일터 요인에도 사람마다 반응이 다릅니다. 네 유형이 스트레스를 받을 때 보일 수 있는 모습과 대화 방법을 살펴보세요.</p>
+    <div class="types4">${TYPES.map(t=>`<div style="border-top-color:${TYPE_COLOR(t)}">${mine.includes(t)?`<span class="mine">나의 유형</span>`:""}<b style="color:${TYPE_COLOR(t)}">${t} ${TYPE_NAME[t]}</b><ul class="small">${INFO[t].stress.map(x=>`<li>${x}</li>`).join("")}</ul></div>`).join("")}</div>
+    <p class="disclaim">유형은 동료를 판단하는 꼬리표가 아닙니다. 동료의 유형을 짐작해 단정하지 말고, 평소와 달라진 행동을 알아차리는 데 참고하세요.</p>
+  </section>
+  <section class="card">
+    <h2>나와 다른 유형의 동료와 대화하기</h2>
+    <p class="small muted">함께 일하는 동료를 떠올리며 유형을 골라 보세요.</p>
+    <div class="tabs" role="group" aria-label="동료 유형 선택">${TYPES.map(t=>`<button type="button" class="tab${ST.peer===t?" on":""}" data-p="${t}" aria-pressed="${ST.peer===t}" style="${ST.peer===t?"color:"+TYPE_COLOR(t):""}">${t} ${TYPE_NAME[t]}</button>`).join("")}</div>
+    <div class="pair" id="pair"></div>
+  </section>
+  <section class="card">
+    <h2>평소와 다른 신호 알아차리기</h2>
+    <div class="sec"><div><h3>신체 신호</h3><ul>${SIGNS.body.map(x=>`<li>${x}</li>`).join("")}</ul></div><div><h3>심리·행동 신호</h3><ul>${SIGNS.mind.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>
+    <p class="small muted">실수가 늘거나 대화가 거칠어지고 위험한 지름길을 고른다면, 처벌보다 먼저 원인과 지원이 필요한지 확인합니다. 증상이 계속되면 의료전문가 상담을 권합니다.</p>
+  </section>
+  <section class="card">
+    <h2>${sup?"관리감독자의 6가지 실천":"관리감독자는 이렇게 지원합니다"}</h2>
+    <ol class="six">${SIX.map(x=>`<li>${x}</li>`).join("")}</ol>
+    <p class="small muted">"왜 그랬어?"보다 "어떤 조건 때문에 이 절차를 지키기 어려웠나요?"라고 질문해 보세요.</p>
+  </section>
+  ${sup?`<section class="card">
+    <h2>관리감독자로서 나의 강점과 보완점</h2>
+    ${mine.map(t=>`<p class="who" style="color:${TYPE_COLOR(t)}">${t}형 · ${TYPE_NAME[t]}</p><ul>${INFO[t].supervisor.map(x=>`<li>${x}</li>`).join("")}</ul>`).join("")}
+  </section>
+  <section class="card">
+    <h2>우리 팀에서 시작할 조직 개선</h2>
+    <p class="small muted">STEP 1에서 나에게 높게 나온 요인은 팀원에게도 공통일 수 있습니다.</p>
+    ${PG.focus.map(d=>`<p class="who">${d.k}</p><ul>${TIPS[d.k].org.map(t=>`<li>${t}</li>`).join("")}</ul>`).join("")}
+    ${supStep?`<details><summary>${supStep.title}</summary>${supStep.html}</details>`:""}
+  </section>`:""}
+  <section class="card memo">
+    <h2>내일부터 바꿀 한 가지</h2>
+    ${[["내가 관찰할 신호 한 가지","예: 점심 이후 말수가 줄어드는 동료"],["내가 확인할 작업조건 한 가지","예: 오후 설비점검 시간이 실제로 확보되는지"],["내가 실행하거나 보고할 조치 한 가지","예: 금요일 TBM에서 업무 우선순위 다시 정하기"]].map((q,i)=>`<label for="mm${i}">${i+1}. ${q[0]}</label><textarea id="mm${i}" data-i="${i}" placeholder="${q[1]}">${esc(ST.memo[i]||"")}</textarea>`).join("")}
+    <p class="note">메모는 이 화면에만 남고 창을 닫으면 지워집니다. 필요하면 아래 '결과 요약 복사'로 옮겨 두세요.</p>
+  </section>
+  <section class="card">
+    <h2>나의 4단계 결과 요약</h2>
+    <div class="sum" id="sumBox"></div>
+    <div class="row noprint">
+      <button class="btn" type="button" id="pdf">PDF 다운로드</button>
+      <button class="btn ghost" type="button" id="copy">결과 요약 복사</button>
+      <button class="btn ghost" type="button" id="print" hidden>인쇄</button>
+    </div>
+    <p class="small muted" id="pdfMsg" role="status" hidden></p>
+    <button class="btn ghost noprint" type="button" id="reset">새 교육생으로 시작 (응답 모두 지우기)</button>
+  </section>
+  <section class="class-act"><h3>마무리</h3><p>직무스트레스는 참아야 할 개인 문제가 아니라, 나눠서 바꿀 수 있는 일터 문제입니다. 오늘 정한 한 가지를 이번 주에 꼭 해보세요.</p></section>`;
+  function paintPair(){
+    const p=ST.peer;
+    $("pair").innerHTML=`<div><span class="kicker">동료 · ${p}형 ${TYPE_NAME[p]}</span><h3>이 유형과 대화할 때</h3><p>${stripLead(INFO[p].comm[1])}</p><h3>스트레스 받을 때 보일 수 있는 모습</h3><ul>${INFO[p].stress.map(x=>`<li>${x}</li>`).join("")}</ul><h3>권해 볼 수 있는 관리방법</h3><ul>${INFO[p].manage.slice(0,2).map(x=>`<li>${x}</li>`).join("")}</ul></div>
+      <div><span class="kicker">나 · ${mine.map(t=>t+"형").join("·")}</span><h3>내가 말할 때</h3>${mine.map(t=>`<p>${stripLead(INFO[t].comm[0])}</p>`).join("")}${mine.includes(p)?`<p class="note">같은 유형이라 편하게 통할 수 있지만, 같은 약점(${INFO[p].caution[0]})이 겹치지 않는지 함께 살펴보세요.</p>`:""}</div>`;
+  }
+  paintPair();
+  app.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{ST.peer=b.dataset.p;save();app.querySelectorAll(".tab").forEach(x=>{const on=x.dataset.p===ST.peer;x.classList.toggle("on",on);x.setAttribute("aria-pressed",on);x.style.color=on?TYPE_COLOR(x.dataset.p):""});paintPair()}));
+  app.querySelectorAll(".memo textarea").forEach(t=>t.addEventListener("input",()=>{ST.memo[+t.dataset.i]=t.value;save();paintSum()}));
+  function sumText(){
+    const K=kossSummary();const rr=discResult();
+    const L=[`[직무스트레스 4단계 점검] ${ST.date} · ${ST.gender==="f"?"여성":"남성"} · ${ST.role==="s"?"관리감독자":"근로자"}${ST.sample?" · 예시 결과":""}`,
+      `STEP 1 ${K.instrument.code}: 총점 ${f1(K.total.v)}점 (${LV[K.total.lv]})`,
+      `  고위험: ${K.high_factors.join(", ")||"없음"} / 경계: ${K.watch_factors.join(", ")||"없음"}`,
+      `STEP 2 DISC: ${rr.primary.join("·")}${rr.primary.length>1?" 복합형":"형"} (${rr.primary.map(t=>TYPE_NAME[t]).join("+")}) · 차이점수 D${sign(rr.diff.D)} I${sign(rr.diff.I)} S${sign(rr.diff.S)} C${sign(rr.diff.C)}`,
+      `STEP 3 나의 실천: ${ST.picks.length?ST.picks.join(" / "):"(아직 고르지 않음)"}`,
+      `  4주 뒤 재점검: ${addDays(ST.date,28)} · 결과 코드 ${curCode()}`,
+      `STEP 4 내일부터 바꿀 한 가지: 신호-${ST.memo[0]||"-"} / 작업조건-${ST.memo[1]||"-"} / 조치-${ST.memo[2]||"-"}`];
+    return L.join("\n");
+  }
+  function paintSum(){$("sumBox").innerHTML=sumText().split("\n").map(l=>`<p class="${l.startsWith("  ")?"small muted":""}">${esc(l.trim())}</p>`).join("")}
+  paintSum();
+  $("copy").addEventListener("click",()=>{const t=sumText();navigator.clipboard.writeText(t).then(()=>toast("결과 요약을 복사했습니다.")).catch(()=>{const r=document.createRange();r.selectNodeContents($("sumBox"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("요약을 선택해 두었습니다. 길게 눌러 복사해 주세요.")})});
+  const inFrame=(()=>{try{return window.self!==window.top}catch(e){return true}})();
+  wirePdf();
+  const pb=$("print");pb.hidden=inFrame;pb.addEventListener("click",()=>window.print());
+  $("reset").addEventListener("click",()=>{carryClear();ST=fresh();save();go("home");toast("응답을 모두 지웠습니다. 다음 교육생이 시작할 수 있어요.")});
+}
+
+
+/* ================================================================
+   PDF 결과지 (원본 KOSS 프로그램의 html2canvas + jsPDF 방식을 4단계 통합 결과지로 확장)
+   ================================================================ */
+const PRINT={line:"#c9d3cf",muted:"#5b6b72",ink:"#1c2a33",acc:"#1B5BB8",warn:"#b4471b",mid:"#a8780c",okS:"#e2f1e3",midS:"#fbf1d6",hiS:"#fbe7dd",surf:"#ffffff"};
+const LIGHT={"--ink":"#0E1E35","--muted":"#55657C","--line":"#D3DDEA","--surface":"#FFFFFF","--band":"#F3F6FB","--band-2":"#FFFFFF","--accent":"#1B5BB8","--d":"#C4402F","--i":"#C98A06","--s":"#23874F","--c":"#2563C9"};
+const lightSVG=h=>h.replace(/var\((--[a-z0-9-]+)\)/g,(m,k)=>LIGHT[k]||"#333").replace(/<svg /,'<svg font-family="Noto Sans KR, sans-serif" ');
+const LVC={hi:"#b4471b",mid:"#a8780c",ok:"#23784A"};
+function buildReport(){
+  const {R,P,PG}=kossResult();const r=discResult();const {ds,total,tref,tlv}=R;
+  const gtxt=ST.gender==="f"?"여성":"남성",rtxt=ST.role==="s"?"관리감독자":"근로자",sup=ST.role==="s";
+  const lv=l=>`<b style="color:${LVC[l]}">${LV[l]}</b>`;
+  const ul=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  const multi=r.primary.length>1;
+  const el=$("report");
+  el.innerHTML=`<div id="stageChart" style="width:680px"></div><div id="barChart" style="width:680px"></div>`;
+  drawStageChart(r);drawBarChart(r);
+  const stage=lightSVG($("stageChart").innerHTML),bar=lightSVG($("barChart").innerHTML);
+  const B=[];
+  B.push(`<p class="sub">산업안전보건교육 · 직무스트레스의 관리</p><h1>나의 직무스트레스 4단계 점검 결과</h1>
+    <p class="sub">점검일 ${esc(ST.date)} (한국시간) · ${gtxt} · ${rtxt}${ST.sample?" · <b style='color:#a8780c'>강사 시연용 예시 결과</b>":""}</p>
+    <table class="t"><tr><th>STEP 1 직무스트레스</th><td>총점 <b>${f1(total)}점</b> · ${lv(tlv)} <span class="sub">(${gtxt} 중앙값 ${f1(tref[1])}, 고위험 ${f1(tref[2])} 이상)</span></td></tr>
+    <tr><th>STEP 2 행동유형</th><td><b>${multi?r.primary.join("·")+" 복합형":r.primary[0]+"형"}</b> (${r.primary.map(t=>TYPE_NAME[t]).join(" + ")})</td></tr>
+    <tr><th>STEP 3 나의 실천</th><td>${ST.picks.length?ST.picks.map(esc).join("<br>"):"<span class='sub'>선택하지 않음</span>"}</td></tr>
+    <tr><th>4주 뒤 재점검</th><td>${fmtD(addDays(ST.date,28))} (${addDays(ST.date,28)})</td></tr>
+    ${ST.sample?"":`<tr><th>재진단용 결과 코드</th><td style="font-family:monospace;word-break:break-all">${esc(curCode())}<br><span class="sub">4주 후 재진단 화면에 넣으면 지금 결과와 비교해 줍니다. 이름은 담기지 않습니다.</span></td></tr>`}</table>`);
+  B.push(`<h2>STEP 1 · 나의 직무스트레스 확인 (${esc(CFG.name)}, ${esc(CFG.code)})</h2><div style="width:520px;margin:0 auto">${radarSVG(ds,PRINT).replace('id="radar"','')}</div>
+    <p class="sub" style="text-align:center">초록 = 정상(중앙값 이하) · 노랑 = 경계 · 빨강 = 고위험(상위25%)</p>`);
+  B.push(`<table class="t c"><thead><tr><th>영역</th><th>내 점수</th><th>판정</th><th>중앙값</th><th>고위험 기준</th></tr></thead><tbody>
+    ${[...ds,{k:"총점",v:total,ref:tref,lv:tlv}].map(d=>`<tr><td class="l"><b>${d.k}</b></td><td><b>${f1(d.v)}</b></td><td>${lv(d.lv)}</td><td>${f1(d.ref[1])}</td><td>${f1(d.ref[2])} 이상</td></tr>`).join("")}</tbody></table>
+    <p class="sub">먼저 살펴볼 요인: ${PG.focus.map((d,i)=>(i+1)+"순위 "+d.k).join(" · ")} · 출처: ${esc(CFG.src)}</p>`);
+  B.push(`<h2>STEP 2 · 나의 스트레스 반응 이해 (DISC)</h2>${r.primary.map(t=>`<p><b style="color:${LIGHT["--"+t.toLowerCase()]}">${t}형 · ${TYPE_NAME[t]}</b> ${INFO[t].feature}</p><div class="two"><div><p class="h">스트레스 상황에서 나타날 수 있는 반응</p>${ul(INFO[t].stress)}</div><div><p class="h">업무에서 주의할 점</p>${ul(INFO[t].caution)}</div></div>`).join("")}`);
+  B.push(`<div class="two"><div>${stage}</div><div>${bar}</div></div>
+    <table class="t c"><thead><tr><th>유형</th><th>최고</th><th>최소</th><th>차이점수</th><th>단계</th></tr></thead><tbody>${TYPES.map(t=>`<tr><td class="l"><b>${t}</b> ${TYPE_NAME[t]}</td><td>${r.most[t]}</td><td>${r.least[t]}</td><td><b>${sign(r.diff[t])}</b></td><td><b>${r.stage[t]}</b></td></tr>`).join("")}</tbody></table>
+    <p class="sub">DISC 결과는 성격 진단이 아니라 현재의 행동 경향을 이해하기 위한 자기이해 자료입니다.</p>`);
+  B.push(`<h2>STEP 3 · 나에게 맞는 스트레스 관리방법</h2>
+    <p class="h">나의 실천 카드</p>${ST.picks.length?`<ol>${ST.picks.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>`:"<p class='sub'>선택한 항목이 없습니다.</p>"}
+    <p class="h">내 유형에 맞는 관리방법</p>${ul([].concat(...r.primary.map(t=>INFO[t].manage)))}
+    <p class="h">4주 목표</p>${ul(PG.goals)}`);
+  B.push(`<p class="h">주차별 실행계획 (KOSHA GUIDE E-G-2-2025 부록 2 흐름도 적용)</p><table class="t"><tbody>${PG.rows.map(x=>`<tr><th style="width:150px">${x[0]}</th><td>${esc(x[1])}<br><span class="sub">방법: ${esc(x[2])}</span></td></tr>`).join("")}</tbody></table>`);
+  B.push(`<p class="h">조직 차원의 개선방안 (${sup?"관리감독자로서 팀에서 시작할 일":"관리감독자·회사에 요청할 일"})</p>${PG.focus.map(d=>`<p style="margin-top:4px"><b>${d.k}</b></p>${ul(TIPS[d.k].org)}`).join("")}`);
+  B.push(`<h2>STEP 4 · ${sup?"관리감독자로서 동료 이해하기":"동료와 서로 이해하기"}</h2>
+    <table class="t"><thead><tr><th>유형</th><th>스트레스 받을 때 보일 수 있는 모습</th><th>이 유형과 대화할 때</th></tr></thead><tbody>${TYPES.map(t=>`<tr><th style="width:90px;color:${LIGHT["--"+t.toLowerCase()]}">${t} ${TYPE_NAME[t]}${r.primary.includes(t)?"<br><span class='sub'>나의 유형</span>":""}</th><td>${INFO[t].stress.join("<br>")}</td><td>${stripLead(INFO[t].comm[1])}</td></tr>`).join("")}</tbody></table>
+    <p class="h">내가 말할 때</p>${ul(r.primary.map(t=>stripLead(INFO[t].comm[0])))}`);
+  B.push(`${sup?`<p class="h">관리감독자로서 나의 강점과 보완점</p>${ul([].concat(...r.primary.map(t=>INFO[t].supervisor)))}`:""}
+    <p class="h">${sup?"관리감독자의 6가지 실천":"관리감독자는 이렇게 지원합니다"}</p><ol>${SIX.map(x=>`<li>${x}</li>`).join("")}</ol>`);
+  const memoQ=["내가 관찰할 신호 한 가지","내가 확인할 작업조건 한 가지","내가 실행하거나 보고할 조치 한 가지"];
+  B.push(`<p class="h">내일부터 바꿀 한 가지</p>${memoQ.map((q,i)=>`<p style="margin-top:6px"><b>${i+1}. ${q}</b></p><p class="memo">${esc(ST.memo[i]||" ")}</p>`).join("")}`);
+  B.push(`<h2>도움받을 수 있는 곳</h2><p>근로자건강센터(안전보건공단, 무료 직무스트레스 상담) · 109 자살예방 상담전화(24시간) · 1577-0199 정신건강 위기상담(24시간) · 사내 EAP·보건관리자</p>
+    <p class="sub" style="margin-top:6px">이 결과는 자가점검용이며 진단이 아닙니다. 2주 이상 잠·식욕·의욕 변화가 계속되면 전문가 상담을 받아 보세요.</p>
+    <p class="h" style="margin-top:10px">출처</p><ol class="sub">${REFS.map(r=>`<li>${esc(r.t)}${r.u?` ${esc(r.l)} (${r.u})`:""}</li>`).join("")}</ol>`);
+  el.innerHTML=B.map(b=>`<div class="rb">${b}</div>`).join("");
+  return [...el.querySelectorAll(".rb")];
+}
+async function makePdf(){
+  const {jsPDF}=window.jspdf;
+  const pdf=new jsPDF({unit:"mm",format:"a4",orientation:"portrait"});
+  const PW=210,PH=297,M=10,CW=PW-2*M;let y=M;
+  const nodes=buildReport();
+  if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+  for(const n of nodes){
+    const cv=await html2canvas(n,{scale:2,backgroundColor:"#ffffff",logging:false});
+    const h=cv.height*CW/cv.width;
+    if(h>PH-2*M){
+      const sliceH=Math.floor(cv.width*(PH-2*M)/CW);let sy=0;
+      while(sy<cv.height){
+        if(y>M){pdf.addPage();y=M}
+        const part=document.createElement("canvas");part.width=cv.width;part.height=Math.min(sliceH,cv.height-sy);
+        part.getContext("2d").drawImage(cv,0,sy,cv.width,part.height,0,0,cv.width,part.height);
+        const ph=part.height*CW/cv.width;pdf.addImage(part.toDataURL("image/jpeg",0.92),"JPEG",M,y,CW,ph);y+=ph;sy+=sliceH;
+      }
+      continue;
+    }
+    if(y+h>PH-M){pdf.addPage();y=M}
+    pdf.addImage(cv.toDataURL("image/jpeg",0.92),"JPEG",M,y,CW,h);y+=h;
+  }
+  const pages=pdf.getNumberOfPages();
+  for(let i=1;i<=pages;i++){pdf.setPage(i);pdf.setFontSize(8);pdf.setTextColor(120);pdf.text(i+" / "+pages,PW/2,PH-5,{align:"center"})}
+  $("report").innerHTML="";
+  return pdf;
+}
+const pdfSection=()=>`<section class="card noprint">
+    <h2>결과지 PDF로 받기</h2>
+    <p class="small muted">STEP 1~4 결과, 8각형 도표, DISC 그래프, 나의 실천 카드, 4주 계획, 메모를 A4 PDF 한 파일로 저장합니다. 파일은 이 휴대폰(PC)에만 저장되고 어디에도 전송되지 않습니다.</p>
+    <div class="row"><button class="btn" type="button" id="pdf">PDF 다운로드</button></div>
+    <p class="small muted" id="pdfMsg" role="status" hidden></p>
+  </section>`;
+function wirePdf(){
+  const btn=$("pdf");if(!btn)return;const msg=$("pdfMsg");
+  const show=t=>{msg.textContent=t;msg.hidden=false};
+  const inFrame=(()=>{try{return window.self!==window.top}catch(e){return true}})();
+  btn.addEventListener("click",async()=>{
+    if(!window.jspdf||!window.html2canvas){show("PDF 도구를 불러오지 못했습니다. 인터넷 연결을 확인한 뒤 페이지를 새로 열어 주세요.");return}
+    let dl=null;
+    if(inFrame){try{dl=window.claude&&window.claude.use?await window.claude.use("downloads"):null}catch(e){dl=null}
+      if(!dl){show("이 화면에서는 파일 저장을 쓸 수 없습니다. '결과 요약 복사'로 내용을 옮겨 주세요.");return}}
+    btn.disabled=true;btn.textContent="PDF 만드는 중…";msg.hidden=true;
+    const fn=`직무스트레스_4단계_결과_${ST.date||todayKST()}.pdf`;
+    try{
+      const pdf=await makePdf();
+      if(dl){await dl.save({filename:fn,data:pdf.output("blob")});show("PDF를 저장했습니다.")}
+      else{const url=URL.createObjectURL(pdf.output("blob"));const a=document.createElement("a");a.href=url;a.download=`stress-check-result_${ST.date||todayKST()}.pdf`; /* 일부 브라우저가 한글 파일명을 지우므로 영문 */document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);show("PDF를 내려받았습니다. 다운로드 폴더(휴대폰은 '파일' 앱)를 확인해 주세요.")}
+    }catch(e){
+      $("report").innerHTML="";
+      const c=e&&e.code;
+      show(c==="declined"?"저장을 취소했습니다. 다시 누르면 받을 수 있습니다.":c==="rate_limited"?"저장 창이 이미 열려 있습니다. 잠시 뒤 다시 눌러 주세요.":"PDF를 만들지 못했습니다. 잠시 뒤 다시 시도해 주세요.");
+    }finally{btn.disabled=false;btn.textContent="PDF 다운로드"}
+  });
+}
+
+/* 테스트·강사 확인용: 원본 채점 함수 그대로 노출 */
+window.PLATFORM={MODE,makeCode,parseCode,curCode,carryGet,KOSS:{CFG,score:()=>score(),priorities,S},DISC:{STAGE_MIN,toStage,scoreCounts,dcCheck},state:()=>ST,kossSummary};
+if(!ST.date)ST.date=todayKST();
+if(MODE==="34"&&!(kossDone()&&discDone()))loadFromCarry();
+if(!allowed(ST.view))ST.view="home";
+render();
+})();
+</script>
+
+</body>
+</html>
