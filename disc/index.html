@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DISC 행동유형 검사</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 산업안전 교육 실습지 느낌의 단일 컬럼(최대 760px). 상단 안전블루 띠 + 단계 표시, 화면별 카드 하나. */
+:root{
+  --bg:#EEF3F9; --surface:#FFFFFF; --surface-2:#F5F8FC; --ink:#0E1E35; --muted:#55657C; --line:#D3DDEA;
+  --accent:#1B5BB8; --accent-strong:#0B3D8C; --accent-soft:#E2ECFA; --on-accent:#FFFFFF;
+  --warn:#B4441F; --warn-soft:#FBEAE3; --ok:#23784A;
+  --d:#C4402F; --i:#C98A06; --s:#23874F; --c:#2563C9;
+  --d-soft:#FBE7E4; --i-soft:#FCF1D6; --s-soft:#E0F2E7; --c-soft:#E1EAFA;
+  --band:#F3F6FB; --band-2:#FFFFFF;
+  --font-display:"IBM Plex Sans KR","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --font-body:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C1524; --surface:#132036; --surface-2:#182842; --ink:#E8EEF7; --muted:#9DB0C9; --line:#2A3D5C;
+  --accent:#5D9BF0; --accent-strong:#8BB8F7; --accent-soft:#1B3358; --on-accent:#0A1424;
+  --warn:#F0916C; --warn-soft:#3A2119; --ok:#5BC48A;
+  --d:#EE7A6B; --i:#F0BC4A; --s:#5CC98B; --c:#6FA2F2;
+  --d-soft:#3A1E1B; --i-soft:#3A2F14; --s-soft:#16352A; --c-soft:#1A2D4E;
+  --band:#16253D; --band-2:#132036; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0C1524; --surface:#132036; --surface-2:#182842; --ink:#E8EEF7; --muted:#9DB0C9; --line:#2A3D5C;
+  --accent:#5D9BF0; --accent-strong:#8BB8F7; --accent-soft:#1B3358; --on-accent:#0A1424;
+  --warn:#F0916C; --warn-soft:#3A2119; --ok:#5BC48A;
+  --d:#EE7A6B; --i:#F0BC4A; --s:#5CC98B; --c:#6FA2F2;
+  --d-soft:#3A1E1B; --i-soft:#3A2F14; --s-soft:#16352A; --c-soft:#1A2D4E;
+  --band:#16253D; --band-2:#132036; color-scheme:dark;}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.6;margin:0}
+.wrap{max-width:760px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.3;margin:0}
+h1{font-size:clamp(1.6rem,4.8vw,2.2rem);font-weight:700}
+h2{font-size:1.35rem;font-weight:700}
+h3{font-size:1.08rem;font-weight:700}
+p{margin:0}
+.strip{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:.82rem;color:var(--muted);letter-spacing:.02em;padding-bottom:12px;border-bottom:3px solid var(--accent);margin-bottom:20px}
+.strip b{color:var(--accent-strong);font-weight:700}
+.steps{display:flex;gap:6px;margin-left:auto}
+.steps span{padding:3px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--muted);font-weight:500}
+.steps span.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.stack{display:flex;flex-direction:column;gap:16px}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.btn{font:inherit;font-family:var(--font-display);font-weight:600;font-size:1.05rem;min-height:52px;padding:10px 22px;border-radius:10px;border:2px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent-strong)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,.pick:focus-visible,.jump:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.howto div{background:var(--surface-2);border-radius:10px;padding:14px 16px}
+.howto b{display:block;font-family:var(--font-display);color:var(--accent-strong)}
+.field label{display:block;font-weight:500;margin-bottom:6px}
+.field input{font:inherit;width:100%;min-height:50px;padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink)}
+.note{background:var(--accent-soft);border-radius:10px;padding:12px 16px;font-size:.92rem}
+/* progress */
+.prog{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.bar{flex:1;height:10px;background:var(--line);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .25s}
+.prog b{font-family:var(--font-display);font-variant-numeric:tabular-nums;min-width:4.5em;text-align:right}
+/* question */
+.qhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}
+.qnum{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--accent-strong);font-variant-numeric:tabular-nums}
+.words{display:grid;grid-template-columns:1fr auto auto;gap:10px 10px;align-items:center;margin-top:12px}
+.words .h{font-size:.82rem;color:var(--muted);text-align:center;letter-spacing:.03em}
+.word{font-size:1.25rem;font-weight:500;padding:8px 0;min-width:0}
+.pick{font:inherit;font-family:var(--font-display);font-weight:600;min-width:84px;min-height:54px;padding:6px 10px;border-radius:10px;border:2px solid var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer;font-size:1rem}
+.pick.most.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.pick.least.on{background:var(--warn);border-color:var(--warn);color:var(--surface)}
+.wordrow-sep{grid-column:1/-1;border-top:1px solid var(--line)}
+.qnav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.qnav .btn{flex:1}
+.grid28{display:grid;grid-template-columns:repeat(14,1fr);gap:5px;margin-top:6px}
+.jump{font:inherit;font-size:.8rem;font-variant-numeric:tabular-nums;min-height:34px;padding:0;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.jump.done{background:var(--accent-soft);color:var(--accent-strong);border-color:transparent;font-weight:700}
+.jump.cur{outline:2px solid var(--accent);outline-offset:1px}
+.jump.miss{border-color:var(--warn);color:var(--warn);font-weight:700}
+.alert{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:12px 16px;font-weight:500}
+/* results */
+.hero{display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+.badge{font-family:var(--font-display);font-weight:700;font-size:2.6rem;line-height:1;min-width:88px;height:88px;padding:0 14px;border-radius:16px;display:grid;place-items:center;color:#fff}
+.hero .t{flex:1;min-width:200px}
+.kicker{font-size:.8rem;letter-spacing:.06em;color:var(--muted);font-weight:500}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:10px 8px;text-align:center;border-bottom:1px solid var(--line)}
+th{font-size:.85rem;color:var(--muted);font-weight:500}
+td.type{font-family:var(--font-display);font-weight:700;text-align:left;white-space:nowrap}
+td.type .tn{font-weight:500;color:var(--muted);font-size:.9em}
+tr.top td{background:var(--accent-soft)}
+tr.nrow td{color:var(--muted)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.charts{display:grid;grid-template-columns:1fr;gap:16px}
+svg text{font-family:var(--font-body)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:inherit;font-family:var(--font-display);font-weight:600;min-height:46px;padding:6px 16px;border-radius:999px;border:2px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.tab.on{color:var(--ink);border-color:currentColor}
+.sec{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.sec>div{background:var(--surface-2);border-radius:10px;padding:16px 18px;min-width:0}
+.sec h3{margin-bottom:8px;font-size:1rem}
+.sec ul{margin:0;padding-left:1.1em}
+.sec li+li{margin-top:4px}
+.sec .wide{grid-column:1/-1}
+.disclaim{border-left:4px solid var(--accent);padding:10px 14px;background:var(--surface-2);border-radius:0 10px 10px 0;font-size:.92rem}
+.onlyprint{display:none}
+@media (max-width:520px){
+  .card{padding:18px}
+  .grid28{grid-template-columns:repeat(7,1fr)}
+  .pick{min-width:66px}
+  .word{font-size:1.12rem}
+  .steps{margin-left:0}
+  th,td{padding:9px 4px}
+  td.type .tn{display:none}
+  .hero .badge{min-width:72px;height:72px;font-size:2.1rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  body{background:#fff;color:#000;font-size:12px}
+  .noprint,.strip .steps{display:none!important}
+  .onlyprint{display:block}
+  .card{border:1px solid #bbb;break-inside:avoid}
+  .typeblock,.typeblock[hidden]{display:flex!important;break-inside:avoid;margin-top:12px}
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="strip">
+    <span><b>산업안전보건교육</b> · 관리감독자 교육 자기이해 실습</span>
+    <div class="steps" aria-label="진행 단계"><span id="st1" class="on">1 안내</span><span id="st2">2 검사</span><span id="st3">3 결과</span></div>
+  </div>
+
+  <!-- 시작 화면 -->
+  <section id="vStart" class="stack">
+    <div class="card stack">
+      <p class="kicker">퍼스널 프로파일 · 28문항</p>
+      <h1>DISC 행동유형 검사</h1>
+      <p>나의 평소 행동 경향을 D(주도형), I(사교형), S(안정형), C(신중형) 네 가지로 살펴보는 검사입니다. 약 10분이 걸리며, 정답은 없습니다.</p>
+      <div class="howto">
+        <div><b>1. 문항마다 단어 4개</b>평소 일할 때의 나를 떠올리며 읽어 보세요.</div>
+        <div><b>2. 최고 1개 선택</b>나와 가장 비슷한 단어에 <strong>최고</strong>를 누릅니다.</div>
+        <div><b>3. 최소 1개 선택</b>나와 가장 거리가 먼 단어에 <strong>최소</strong>를 누릅니다.</div>
+      </div>
+      <p class="small muted">같은 단어를 최고와 최소로 동시에 고를 수 없습니다. 28문항을 모두 답해야 결과가 나옵니다. 너무 오래 고민하지 말고 처음 떠오르는 느낌으로 고르세요.</p>
+      <div class="field">
+        <label for="nameIn">이름 (선택)</label>
+        <input id="nameIn" type="text" maxlength="20" placeholder="결과지에 표시할 이름" autocomplete="off">
+      </div>
+      <p class="small muted">입력한 이름과 응답은 이 기기 화면에서만 쓰이며 어디에도 전송·저장되지 않습니다.</p>
+      <div id="resumeBox" class="note" hidden>이전에 하던 검사가 남아 있습니다. <strong id="resumeCount"></strong>문항까지 답했어요.</div>
+      <div class="row">
+        <button class="btn" id="btnStart" type="button">검사 시작</button>
+        <button class="btn ghost" id="btnResume" type="button" hidden>이어서 하기</button>
+        <button class="btn ghost" id="btnSample" type="button">예시 결과 보기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 검사 화면 -->
+  <section id="vTest" class="stack" hidden>
+    <div class="card">
+      <div class="prog"><div class="bar"><i id="barFill" style="width:0%"></i></div><b id="progTxt">0 / 28</b></div>
+      <div class="qhead"><span class="qnum" id="qNum">문항 1</span><span class="small muted" id="qState">최고와 최소를 하나씩 고르세요</span></div>
+      <div class="words" id="words" role="group" aria-label="단어 선택"></div>
+      <div id="missAlert" class="alert" hidden style="margin-top:16px"></div>
+      <div class="qnav">
+        <button class="btn ghost" id="btnPrev" type="button">이전 문항</button>
+        <button class="btn" id="btnNext" type="button">다음 문항</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="qhead"><h3>전체 문항</h3><span class="small muted">번호를 누르면 이동합니다</span></div>
+      <div class="grid28" id="grid28"></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn ghost" id="btnRestart1" type="button">처음부터 다시</button>
+      </div>
+      <div id="confirmRestart1" class="note" hidden style="margin-top:12px">
+        지금까지 고른 응답이 모두 지워집니다. <div class="row" style="margin-top:8px"><button class="btn" id="yesRestart1" type="button">지우고 다시 시작</button><button class="btn ghost" id="noRestart1" type="button">취소</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 결과 화면 -->
+  <section id="vResult" class="stack" hidden>
+    <div id="sampleNote" class="alert" hidden>예시 결과입니다. 실제 교육생의 결과가 아니며, 화면 구성을 미리 보여주기 위한 응답으로 계산했습니다.</div>
+    <div class="card stack">
+      <div class="hero">
+        <div class="badge" id="rBadge">D</div>
+        <div class="t">
+          <p class="kicker" id="rWho">검사 결과</p>
+          <h2 id="rTitle">나의 주요 행동유형</h2>
+          <p class="muted" id="rSub"></p>
+        </div>
+      </div>
+      <p class="disclaim">이 결과는 성격을 진단하거나 평가하는 것이 아니라, 현재의 행동 경향을 이해하기 위한 자기이해 자료입니다. 실제 행동은 상황, 역할, 환경에 따라 달라질 수 있으며 어느 유형이 더 좋거나 나쁜 것은 아닙니다.</p>
+    </div>
+
+    <div class="card stack">
+      <h2>유형별 집계표</h2>
+      <div class="tblwrap"><table>
+        <thead><tr><th style="text-align:left">유형</th><th>최고치<br>횟수</th><th>최소치<br>횟수</th><th>차이점수</th><th>단계</th></tr></thead>
+        <tbody id="rTable"></tbody>
+      </table></div>
+      <p class="small muted">최고치와 최소치는 각각 합계 28입니다. N은 따로 세기만 하고 점수 계산에는 넣지 않습니다. 단계는 유형별 집계표 그래프의 점수 구간을 유형마다 따로 적용한 값입니다.</p>
+    </div>
+
+    <div class="card stack">
+      <h2>단계 그래프</h2>
+      <p class="small muted">종이 집계표 하단 그래프와 같은 방식입니다. 점 위 숫자는 차이점수, 괄호는 단계입니다.</p>
+      <div id="stageChart"></div>
+    </div>
+
+    <div class="card stack">
+      <h2>차이점수 비교</h2>
+      <p class="small muted">0을 기준으로 오른쪽은 최고 선택이 더 많은 유형, 왼쪽은 최소 선택이 더 많은 유형입니다.</p>
+      <div id="barChart"></div>
+    </div>
+
+    <div class="card stack">
+      <h2>유형별 해석</h2>
+      <p class="small muted">주요 유형이 먼저 열려 있습니다. 다른 유형도 눌러서 함께 읽어 보세요. 동료의 유형을 이해하는 데 도움이 됩니다.</p>
+      <div class="tabs noprint" id="tabs" role="tablist"></div>
+      <div id="typeArea"></div>
+    </div>
+
+    <div class="card stack noprint">
+      <div class="row">
+        <button class="btn" id="btnPrint" type="button">결과 인쇄 / PDF 저장</button>
+        <button class="btn ghost" id="btnReview" type="button">응답 다시 보기</button>
+        <button class="btn ghost" id="btnRestart2" type="button">새 검사 시작</button>
+      </div>
+      <p id="printHint" class="small muted" hidden>이 화면에서는 인쇄 창이 열리지 않습니다. 인쇄나 PDF 저장이 필요하면 배포용 파일(disc-test.html)을 크롬·엣지 같은 브라우저에서 열어 사용하세요.</p>
+      <div id="confirmRestart2" class="note" hidden>
+        현재 결과와 응답이 지워집니다. <div class="row" style="margin-top:8px"><button class="btn" id="yesRestart2" type="button">지우고 새로 시작</button><button class="btn ghost" id="noRestart2" type="button">취소</button></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ===== 1. 검사지 데이터 (DISC 검사지.pdf 원문, 문항 순서 그대로) =====
+   각 단어: [단어, 최고 기호, 최소 기호]  /  Z=D, □=I, ▲=S, ★=C, N=미반영 */
+const ITEMS = [
+ [["열정적인","I","I"],["대담한","D","D"],["치밀한","C","C"],["만족해하는","S","S"]],
+ [["신중한","C","C"],["결단력 있는","D","D"],["확신을 주는","I","I"],["호의적인","S","N"]],
+ [["다정한","I","N"],["정확한","C","C"],["솔직한","D","D"],["변화없는","N","S"]],
+ [["말하기 좋아하는","I","I"],["자제력 있는","C","C"],["관습적인","S","S"],["결단력 있는","D","D"]],
+ [["도전하는","D","D"],["통찰력 있는","C","C"],["사교적인","I","I"],["온건한","S","S"]],
+ [["온화한","S","S"],["설득력 있는","I","N"],["겸손한","N","C"],["독창적인","N","D"]],
+ [["표현력 있는","I","I"],["조심성 있는","C","C"],["주도적인","D","D"],["민감히 반응하는","N","S"]],
+ [["호의적인","I","I"],["세심한","C","N"],["겸손한","S","S"],["참을성 적은","D","D"]],
+ [["사려 깊은","C","C"],["잘 동의하는","S","S"],["매력적인","I","I"],["확고한","D","D"]],
+ [["용감한","D","D"],["격려하는","I","I"],["순응하는","S","S"],["수줍어하는","N","C"]],
+ [["내성적인","C","C"],["호의적인","S","S"],["의지가 강한","D","D"],["명랑한","I","I"]],
+ [["격려하는","I","I"],["친절한","S","S"],["주의 깊은","C","C"],["독립적인","D","D"]],
+ [["경쟁적인","D","D"],["생각이 깊은","S","S"],["활발한","I","I"],["내성적인","C","C"]],
+ [["세밀한","C","C"],["유순한","S","S"],["완고한","D","D"],["놀기 좋아하는","I","I"]],
+ [["호감 주는","I","I"],["생각이 깊은","C","N"],["의지가 굳은","D","D"],["일관된","S","S"]],
+ [["논리적인","C","C"],["과감한","D","D"],["충실한","S","S"],["인기 있는","I","I"]],
+ [["사교적인","I","I"],["참을성 있는","S","S"],["자신감 있는","D","D"],["예의바른","C","C"]],
+ [["의존적인","S","S"],["의욕적인","D","N"],["철저한","C","C"],["활기 있는","I","I"]],
+ [["의욕적인","D","D"],["외향적인","I","I"],["친근한","S","S"],["갈등을 피하는","N","C"]],
+ [["유머가 있는","I","I"],["이해심 있는","S","S"],["공평한","N","C"],["단호한","D","D"]],
+ [["자제력 있는","C","C"],["관대한","S","S"],["활기 있는","I","I"],["고집스런","D","D"]],
+ [["재치 있는","I","I"],["내향적인","C","C"],["강인한","D","D"],["화내지 않는","S","S"]],
+ [["잘 어울리는","I","I"],["점잖은","C","C"],["활기찬","D","D"],["너그러운","S","S"]],
+ [["매력 있는","I","I"],["흡족해하는","S","S"],["지시하는","D","D"],["양보하는","C","C"]],
+ [["자기주장을 하는","D","D"],["체계적인","C","C"],["협력적인","S","S"],["즐거운","I","I"]],
+ [["유쾌한","I","I"],["정교한","C","C"],["결과를 요구하는","D","D"],["침착한","S","S"]],
+ [["변화를 추구하는","D","D"],["우호적인","S","S"],["호소력 있는","I","I"],["꼼꼼한","C","C"]],
+ [["공손한","C","C"],["새롭게 시작하는","D","D"],["낙천적인","I","I"],["도움을 주려하는","S","S"]]
+];
+
+/* ===== 2. 단계 환산표 (유형별 집계표 하단 그래프) =====
+   각 배열 = 7단계, 6단계, 5단계, 4단계, 3단계, 2단계의 '최소 점수'. 이보다 낮으면 1단계.
+   I형 7단계: 원본 인쇄 +6 (6단계 +5~+9와 겹침) → 사용자 확인 대기 중, 임시로 +10 적용 */
+const I_STAGE7_MIN = 10;
+const STAGE_MIN = {
+  D: [6, 1, -2, -5, -8, -11],
+  I: [I_STAGE7_MIN, 5, 2, -1, -5, -9],
+  S: [11, 8, 5, 2, -1, -4],
+  C: [11, 7, 4, 1, -2, -6]
+};
+const TYPES = ["D","I","S","C"];
+const TYPE_NAME = {D:"주도형",I:"사교형",S:"안정형",C:"신중형"};
+
+/* ===== 3. 채점 ===== */
+function toStage(type, score){
+  const mins = STAGE_MIN[type];
+  for (let k = 0; k < mins.length; k++) if (score >= mins[k]) return 7 - k;
+  return 1;
+}
+function scoreAnswers(answers){ // answers[i] = {most: 0~3, least: 0~3}
+  const most = {D:0,I:0,S:0,C:0,N:0}, least = {D:0,I:0,S:0,C:0,N:0};
+  answers.forEach((a, i) => { most[ITEMS[i][a.most][1]]++; least[ITEMS[i][a.least][2]]++; });
+  const diff = {}, stage = {};
+  TYPES.forEach(t => { diff[t] = most[t] - least[t]; stage[t] = toStage(t, diff[t]); });
+  const topStage = Math.max(...TYPES.map(t => stage[t]));
+  const primary = TYPES.filter(t => stage[t] === topStage);
+  return {most, least, diff, stage, topStage, primary};
+}
+window.DISC = {ITEMS, STAGE_MIN, toStage, scoreAnswers};
+
+/* ===== 4. 유형별 해석 ===== */
+const INFO = {
+ D:{feature:"목표와 결과를 중시하고, 빠르게 판단해 행동으로 옮기는 경향이 있습니다. 어려운 상황에서 앞장서서 방향을 정하는 편입니다.",
+  strength:["신속한 의사결정과 실행력","위기·비상 상황에서 상황을 주도","목표 달성을 끝까지 밀고 나가는 추진력","문제를 피하지 않고 직접 해결"],
+  caution:["속도를 앞세우다 절차나 세부 확인을 건너뛸 수 있음","지시가 짧고 단호해 상대가 의견을 말하기 어려워할 수 있음","다른 사람의 의견을 다 듣기 전에 결론을 내릴 수 있음"],
+  comm:["내가 말할 때: 결론과 이유를 말한 뒤 \"어떻게 생각해요?\"라고 상대 의견을 꼭 묻기","이 유형과 대화할 때: 요점부터 짧게, 선택지와 기대 결과를 함께 제시"],
+  stress:["일이 내 뜻대로 통제되지 않을 때 조급해짐","말투가 강해지거나 혼자 처리하려 함"],
+  manage:["빠르게 걷기·근력운동처럼 몸을 쓰는 활동으로 긴장 풀기","중요한 결정 전 10초 멈추고 심호흡하기","통제할 수 있는 일과 없는 일을 나눠 적어 보기","혼자 떠안지 말고 업무를 나눠 맡기기"],
+  supervisor:["작업 전 안전점검회의(TBM)에서 목표와 위험요인을 분명하게 전달하는 데 강점이 있습니다.","위험할 때 작업중지를 주저 없이 결정할 수 있습니다.","\"빨리 끝내자\"보다 \"확인했나요?\"를 먼저 묻고, 작업자 의견을 끝까지 듣는 시간을 따로 정해 두세요."]},
+ I:{feature:"사람과의 관계와 분위기를 중시하고, 표현이 풍부하며 낙관적인 경향이 있습니다. 다른 사람을 설득하고 격려하는 편입니다.",
+  strength:["밝은 분위기를 만들고 참여를 이끌어 냄","칭찬과 격려로 동기부여","새로운 아이디어 제안","사람 사이의 긴장을 부드럽게 풀어 줌"],
+  caution:["세부사항·기록·마감 관리가 느슨해질 수 있음","낙관적으로 보다가 위험을 작게 볼 수 있음","여러 약속을 한꺼번에 해 일이 몰릴 수 있음"],
+  comm:["내가 말할 때: 핵심 내용은 메모나 문자로 한 번 더 정리해 전달하기","이 유형과 대화할 때: 먼저 인정과 칭찬, 이야기할 기회를 주고 세부사항은 문서로 정리해 주기"],
+  stress:["무시당하거나 고립된다고 느낄 때 힘들어함","말이 많아지거나 감정이 겉으로 드러나고, 비판에 예민해짐"],
+  manage:["믿을 수 있는 동료와 대화하며 감정 정리하기","할 일을 체크리스트로 적어 머릿속 부담 줄이기","함께하는 운동이나 즐거운 취미로 기분 전환","일정 사이에 여유 시간을 두기"],
+  supervisor:["안전교육과 TBM 분위기를 살려 작업자의 참여와 질문을 끌어내는 데 강점이 있습니다.","안전하게 일한 작업자를 바로 칭찬해 안전행동을 늘릴 수 있습니다.","점검과 기록은 체크리스트로 보완하고, 위험성평가 때 \"가장 나쁜 경우는?\"을 한 번 더 물어보세요."]},
+ S:{feature:"안정과 협력을 중시하고, 꾸준하고 차분한 경향이 있습니다. 다른 사람을 돕고 팀을 뒷받침하는 편입니다.",
+  strength:["맡은 일을 꾸준하고 일관되게 실행","다른 사람의 말을 잘 들어 줌","팀워크와 신뢰 형성","정해진 절차를 성실하게 지킴"],
+  caution:["갑작스러운 변화에 적응할 시간이 필요함","갈등을 피하려고 불편한 의견(위험 신고 등)을 말하지 않을 수 있음","거절이 어려워 일이 한 사람에게 몰릴 수 있음"],
+  comm:["내가 말할 때: 불편한 점도 작게라도 바로 말하기, \"이번엔 어렵습니다\" 연습하기","이 유형과 대화할 때: 충분한 시간과 설명, 변화는 미리 알리고 단계적으로, 의견을 직접 물어봐 주기"],
+  stress:["급한 변화나 갈등 상황에서 말이 줄고 속으로 참음","결정을 미루거나 혼자 부담을 안음"],
+  manage:["감정을 쌓아 두지 말고 가까운 사람에게 작게 표현하기","규칙적인 생활과 가벼운 스트레칭으로 몸의 긴장 풀기","변화는 작은 단계로 나눠 하나씩 적응하기","거절해도 관계가 깨지지 않는다는 경험 쌓기"],
+  supervisor:["작업자의 이야기를 잘 들어 아차사고와 불편사항을 모으는 데 강점이 있습니다.","표준작업절차를 꾸준히 지키도록 이끄는 역할에 잘 맞습니다.","위험 상황에서는 망설이지 않도록 작업중지 기준을 미리 정해 두고 그대로 따르세요."]},
+ C:{feature:"정확성과 품질을 중시하고, 자료와 기준에 근거해 판단하는 경향이 있습니다. 체계적이고 분석적인 편입니다.",
+  strength:["꼼꼼한 점검과 확인","규정과 기준을 정확히 지킴","문제의 원인을 체계적으로 분석","위험요인을 미리 찾아내고 기록으로 남김"],
+  caution:["완벽을 추구하다 결정이 늦어질 수 있음","지적이 비판처럼 들려 상대가 위축될 수 있음","감정 표현이 적어 거리감이 느껴질 수 있음"],
+  comm:["내가 말할 때: 개선점보다 잘한 점을 먼저 말하고, 결론을 앞에 두기","이 유형과 대화할 때: 자료와 근거를 준비하고, 생각할 시간을 주며, 구체적으로 질문하기"],
+  stress:["기준이 모호하거나 비판을 받을 때 지나치게 신중해짐","혼자 파고들며 걱정이 많아짐"],
+  manage:["\"이 정도면 충분하다\"는 기준을 미리 정하기","걱정되는 일을 종이에 적고 할 수 있는 일만 고르기","혼자 조용히 쉬는 회복 시간 확보하기","복식호흡·이완 체조로 긴장 낮추기"],
+  supervisor:["위험성평가, 작업 전 점검, 법적 기준 확인에서 강점이 있습니다.","점검 결과를 전달할 때 잘된 점을 먼저 말하면 작업자의 수용도가 높아집니다.","긴급 상황에서는 \"지금 결정할 것\"과 \"나중에 분석할 것\"을 나눠 빠르게 판단하세요."]}
+};
+
+/* ===== 5. 상태 ===== */
+const DRAFT_KEY = "disc-draft-v1";
+let answers = ITEMS.map(() => ({most:null, least:null}));
+let cur = 0, isSample = false, userName = "";
+const $ = id => document.getElementById(id);
+function saveDraft(){ try{ localStorage.setItem(DRAFT_KEY, JSON.stringify({answers, cur, userName})); }catch(e){} }
+function loadDraft(){ try{ const d = JSON.parse(localStorage.getItem(DRAFT_KEY)); if (d && Array.isArray(d.answers) && d.answers.length === 28) return d; }catch(e){} return null; }
+function clearDraft(){ try{ localStorage.removeItem(DRAFT_KEY); }catch(e){} }
+const isDone = a => a.most !== null && a.least !== null && a.most !== a.least;
+const doneCount = () => answers.filter(isDone).length;
+
+function show(view){
+  ["vStart","vTest","vResult"].forEach(v => $(v).hidden = (v !== view));
+  $("st1").classList.toggle("on", view === "vStart");
+  $("st2").classList.toggle("on", view === "vTest");
+  $("st3").classList.toggle("on", view === "vResult");
+  window.scrollTo(0, 0);
+}
+
+/* ===== 6. 검사 화면 ===== */
+function renderQ(){
+  const a = answers[cur];
+  $("qNum").textContent = "문항 " + (cur + 1);
+  const w = $("words"); w.innerHTML = "";
+  const h0 = document.createElement("span"); h0.className = "h"; h0.style.textAlign = "left"; h0.textContent = "단어";
+  const h1 = document.createElement("span"); h1.className = "h"; h1.textContent = "가장 비슷함";
+  const h2 = document.createElement("span"); h2.className = "h"; h2.textContent = "가장 거리 멂";
+  w.append(h0, h1, h2);
+  ITEMS[cur].forEach((it, idx) => {
+    const sep = document.createElement("div"); sep.className = "wordrow-sep"; w.append(sep);
+    const lab = document.createElement("span"); lab.className = "word"; lab.textContent = it[0];
+    const bm = document.createElement("button"); bm.type = "button"; bm.id = "m" + idx;
+    bm.className = "pick most" + (a.most === idx ? " on" : ""); bm.textContent = "최고";
+    bm.setAttribute("aria-pressed", a.most === idx); bm.setAttribute("aria-label", it[0] + " 최고");
+    const bl = document.createElement("button"); bl.type = "button"; bl.id = "l" + idx;
+    bl.className = "pick least" + (a.least === idx ? " on" : ""); bl.textContent = "최소";
+    bl.setAttribute("aria-pressed", a.least === idx); bl.setAttribute("aria-label", it[0] + " 최소");
+    bm.onclick = () => choose("most", idx); bl.onclick = () => choose("least", idx);
+    w.append(lab, bm, bl);
+  });
+  const dc = doneCount();
+  $("barFill").style.width = (dc / 28 * 100) + "%";
+  $("progTxt").textContent = dc + " / 28";
+  $("qState").textContent = isDone(a) ? "응답 완료" : (a.most === null && a.least === null ? "최고와 최소를 하나씩 고르세요" : (a.most === null ? "최고를 골라 주세요" : "최소를 골라 주세요"));
+  $("btnPrev").disabled = cur === 0;
+  $("btnNext").textContent = cur === 27 ? "결과 보기" : "다음 문항";
+  $("btnNext").disabled = !isDone(a);
+  renderGrid();
+}
+function renderGrid(missing){
+  const g = $("grid28"); g.innerHTML = "";
+  answers.forEach((a, i) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "jump"; b.textContent = i + 1;
+    if (isDone(a)) b.classList.add("done");
+    if (missing && missing.includes(i)) b.classList.add("miss");
+    if (i === cur) b.classList.add("cur");
+    b.setAttribute("aria-label", (i + 1) + "번 문항" + (isDone(a) ? " 응답 완료" : " 미응답"));
+    b.onclick = () => { cur = i; $("missAlert").hidden = true; renderQ(); };
+    g.append(b);
+  });
+}
+function choose(kind, idx){
+  const a = answers[cur];
+  const other = kind === "most" ? "least" : "most";
+  a[kind] = (a[kind] === idx) ? null : idx;     // 같은 버튼을 다시 누르면 취소
+  if (a[other] === idx && a[kind] === idx) a[other] = null; // 한 단어에 최고·최소 동시 선택 불가
+  saveDraft(); renderQ();
+  if (isDone(a) && cur < 27) {
+    // 두 개 모두 고르면 잠시 뒤 다음 문항으로 자동 이동 (응답이 바뀐 직후 확인할 수 있도록 0.45초 대기)
+    const at = cur;
+    setTimeout(() => { if (cur === at && isDone(answers[at]) && !$("vTest").hidden) { cur++; renderQ(); } }, 450);
+  }
+}
+function submit(){
+  const missing = answers.map((a, i) => isDone(a) ? -1 : i).filter(i => i >= 0);
+  if (missing.length){
+    $("missAlert").hidden = false;
+    $("missAlert").textContent = "아직 답하지 않은 문항이 " + missing.length + "개 있습니다: " + missing.map(i => i + 1).join(", ") + "번. 아래 빨간 번호를 눌러 답해 주세요.";
+    renderGrid(missing); return;
+  }
+  isSample = false; showResult(scoreAnswers(answers));
+}
+
+/* ===== 7. 결과 화면 ===== */
+const chartW = () => Math.max(330, Math.min(640, Math.round(($("stageChart").clientWidth || 640))));
+const colorOf = t => getComputedStyle(document.documentElement).getPropertyValue("--" + t.toLowerCase()).trim();
+const sign = n => (n > 0 ? "+" : "") + n;
+
+function showResult(r){
+  show("vResult");
+  $("sampleNote").hidden = !isSample;
+  const label = r.primary.join("·");
+  const multi = r.primary.length > 1;
+  const badge = $("rBadge");
+  badge.textContent = label;
+  badge.style.background = multi ? "var(--accent)" : "var(--" + r.primary[0].toLowerCase() + ")";
+  badge.style.fontSize = multi ? (r.primary.length > 2 ? "1.6rem" : "2rem") : "2.6rem";
+  $("rWho").textContent = (isSample ? "예시" : (userName ? userName + "님" : "나")) + "의 검사 결과";
+  $("rTitle").textContent = multi ? label + " 복합형 (" + r.primary.map(t => TYPE_NAME[t]).join(" + ") + ")" : r.primary[0] + "형 · " + TYPE_NAME[r.primary[0]];
+  $("rSub").textContent = multi
+    ? r.primary.join("형, ") + "형이 똑같이 가장 높은 " + r.topStage + "단계입니다. 한 유형으로 나누지 않고 두 특성을 함께 가진 것으로 봅니다."
+    : "네 유형 중 단계가 가장 높습니다(" + r.topStage + "단계, 차이점수 " + sign(r.diff[r.primary[0]]) + ").";
+
+  const tb = $("rTable"); tb.innerHTML = "";
+  TYPES.forEach(t => {
+    const tr = document.createElement("tr"); if (r.primary.includes(t)) tr.className = "top";
+    tr.innerHTML = '<td class="type"><span class="dot" style="background:var(--' + t.toLowerCase() + ')"></span>' + t + ' <span class="tn">' + TYPE_NAME[t] + "</span></td><td>" + r.most[t] + "</td><td>" + r.least[t] + "</td><td><b>" + sign(r.diff[t]) + "</b></td><td><b>" + r.stage[t] + "</b></td>";
+    tb.append(tr);
+  });
+  const nr = document.createElement("tr"); nr.className = "nrow";
+  nr.innerHTML = '<td class="type">N <span class="tn">미반영</span></td><td>' + r.most.N + "</td><td>" + r.least.N + "</td><td>–</td><td>–</td>";
+  tb.append(nr);
+  const tot = document.createElement("tr");
+  const sm = TYPES.reduce((s, t) => s + r.most[t], r.most.N), sl = TYPES.reduce((s, t) => s + r.least[t], r.least.N);
+  tot.innerHTML = '<td class="type">합계</td><td>' + sm + "</td><td>" + sl + "</td><td></td><td></td>";
+  tb.append(tot);
+
+  drawStageChart(r); drawBarChart(r); renderTypes(r);
+  $("printHint").hidden = true;
+}
+
+function drawStageChart(r){
+  const W = chartW(), H = W < 500 ? 380 : 420, L = W < 500 ? 12 : 44, R = 40, T = 20, B = 40;
+  const bandH = (H - T - B) / 7, colW = (W - L - R) / 4;
+  const ink = "var(--ink)", muted = "var(--muted)";
+  let s = '<svg viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="DISC 단계 그래프">';
+  for (let st = 7; st >= 1; st--){
+    const y = T + (7 - st) * bandH;
+    s += '<rect x="' + L + '" y="' + y + '" width="' + (W - L - R) + '" height="' + bandH + '" fill="' + (st % 2 ? "var(--band)" : "var(--band-2)") + '"/>';
+    s += '<text x="' + (W - R + 14) + '" y="' + (y + bandH / 2 + 5) + '" font-size="14" fill="' + muted + '" text-anchor="middle">' + st + "</text>";
+  }
+  s += '<text x="' + (W - R + 14) + '" y="' + (T - 6) + '" font-size="11" fill="' + muted + '" text-anchor="middle">단계</text>';
+  // 중간선(4단계 중앙)
+  const midY = T + 3.5 * bandH;
+  s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + midY + '" y2="' + midY + '" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 5"/>';
+  const pts = TYPES.map((t, k) => {
+    const x = L + colW * (k + 0.5);
+    const y = T + (7 - r.stage[t]) * bandH + bandH / 2;
+    return {t, x, y};
+  });
+  TYPES.forEach((t, k) => {
+    const x = L + colW * (k + 0.5);
+    s += '<line x1="' + x + '" x2="' + x + '" y1="' + T + '" y2="' + (H - B) + '" stroke="var(--line)" stroke-width="1.5"/>';
+    s += '<text x="' + x + '" y="' + (H - B + 28) + '" font-size="20" font-weight="700" fill="' + ink + '" text-anchor="middle">' + t + "</text>";
+  });
+  s += '<polyline points="' + pts.map(p => p.x + "," + p.y).join(" ") + '" fill="none" stroke="var(--muted)" stroke-width="2.5"/>';
+  pts.forEach(p => {
+    const top = r.primary.includes(p.t);
+    s += '<circle cx="' + p.x + '" cy="' + p.y + '" r="' + (top ? 13 : 8) + '" fill="var(--' + p.t.toLowerCase() + ')" stroke="var(--surface)" stroke-width="3"/>';
+    const lab = sign(r.diff[p.t]) + " (" + r.stage[p.t] + ")";
+    s += '<text x="' + p.x + '" y="' + (p.y - (top ? 20 : 15)) + '" font-size="' + (top ? 16 : 14) + '" font-weight="' + (top ? 700 : 500) + '" fill="' + ink + '" text-anchor="middle" paint-order="stroke" stroke="var(--surface)" stroke-width="4">' + lab + "</text>";
+  });
+  s += "</svg>";
+  $("stageChart").innerHTML = s;
+}
+
+function drawBarChart(r){
+  const W = chartW(), rowH = 54, T = 16, B = 30, L = W < 500 ? 92 : 120, R = 30;
+  const H = T + B + rowH * 4;
+  const maxAbs = Math.max(10, ...TYPES.map(t => Math.abs(r.diff[t])));
+  const lim = Math.ceil(maxAbs / 5) * 5;
+  const x0 = L + (W - L - R) / 2, sc = (W - L - R) / 2 / lim;
+  let s = '<svg viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="차이점수 막대그래프">';
+  for (let v = -lim; v <= lim; v += 5){
+    const x = x0 + v * sc;
+    s += '<line x1="' + x + '" x2="' + x + '" y1="' + T + '" y2="' + (H - B) + '" stroke="var(--line)" stroke-width="' + (v === 0 ? 2 : 1) + '"/>';
+    s += '<text x="' + x + '" y="' + (H - B + 20) + '" font-size="12" fill="var(--muted)" text-anchor="middle">' + sign(v) + "</text>";
+  }
+  TYPES.forEach((t, k) => {
+    const y = T + k * rowH + 10, h = rowH - 20, v = r.diff[t];
+    const top = r.primary.includes(t);
+    s += '<text x="' + (L - 12) + '" y="' + (y + h / 2 + 6) + '" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="end">' + t + " " + TYPE_NAME[t] + "</text>";
+    const x = v >= 0 ? x0 : x0 + v * sc, w = Math.max(Math.abs(v) * sc, 2);
+    s += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="4" fill="var(--' + t.toLowerCase() + ')" opacity="' + (top ? 1 : .55) + '"/>';
+    const lx = v >= 0 ? x + w + 8 : x - 8;
+    s += '<text x="' + lx + '" y="' + (y + h / 2 + 5) + '" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="' + (v >= 0 ? "start" : "end") + '">' + sign(v) + "</text>";
+  });
+  s += "</svg>";
+  $("barChart").innerHTML = s;
+}
+
+function typeBlock(t){
+  const d = INFO[t], li = a => "<ul>" + a.map(x => "<li>" + x + "</li>").join("") + "</ul>";
+  return '<div class="typeblock stack" data-type="' + t + '"><h3 style="color:var(--' + t.toLowerCase() + ')">' + t + "형 · " + TYPE_NAME[t] + "</h3>" +
+    '<div class="sec">' +
+    '<div class="wide"><h3>기본 행동 특성</h3><p>' + d.feature + "</p></div>" +
+    "<div><h3>업무에서의 강점</h3>" + li(d.strength) + "</div>" +
+    "<div><h3>업무에서 주의할 점</h3>" + li(d.caution) + "</div>" +
+    "<div><h3>동료와의 의사소통</h3>" + li(d.comm) + "</div>" +
+    "<div><h3>스트레스 상황에서 나타날 수 있는 반응</h3>" + li(d.stress) + "</div>" +
+    "<div><h3>나에게 맞는 스트레스 관리방법</h3>" + li(d.manage) + "</div>" +
+    "<div><h3>관리감독자로서 소통·관리 방법</h3>" + li(d.supervisor) + "</div>" +
+    "</div></div>";
+}
+function renderTypes(r){
+  const order = r.primary.concat(TYPES.filter(t => !r.primary.includes(t)));
+  const tabs = $("tabs"), area = $("typeArea");
+  tabs.innerHTML = ""; area.innerHTML = order.map(typeBlock).join("");
+  const blocks = [...area.querySelectorAll(".typeblock")];
+  const open = new Set(r.primary);
+  function sync(){
+    blocks.forEach(b => b.hidden = !open.has(b.dataset.type));
+    [...tabs.children].forEach(b => { const on = open.has(b.dataset.type); b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); b.style.color = on ? "var(--" + b.dataset.type.toLowerCase() + ")" : ""; });
+  }
+  order.forEach(t => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "tab"; b.dataset.type = t; b.id = "tab" + t;
+    b.textContent = t + " " + TYPE_NAME[t] + (r.primary.includes(t) ? " (나의 유형)" : "");
+    b.onclick = () => { if (open.has(t)) { if (open.size > 1) open.delete(t); } else open.add(t); sync(); };
+    tabs.append(b);
+  });
+  sync();
+}
+
+/* ===== 8. 버튼 연결 ===== */
+const SAMPLE = [[3,1],[3,0],[0,2],[3,2],[0,2],[2,1],[2,3],[2,3],[3,1],[0,1],[1,0],[0,2],[3,1],[2,3],[2,0],[1,0],[1,0],[0,1],[3,0],[2,1],[1,2],[3,2],[2,3],[1,3],[2,1],[1,0],[0,1],[3,0]];
+function resetAll(){ answers = ITEMS.map(() => ({most:null, least:null})); cur = 0; clearDraft(); }
+
+$("btnStart").onclick = () => { resetAll(); userName = $("nameIn").value.trim(); saveDraft(); show("vTest"); renderQ(); };
+$("btnResume").onclick = () => { const d = loadDraft(); if (d){ answers = d.answers; cur = d.cur || 0; userName = d.userName || ""; } show("vTest"); renderQ(); };
+$("btnSample").onclick = () => { isSample = true; showResult(scoreAnswers(SAMPLE.map(([m, l]) => ({most:m, least:l})))); };
+$("btnPrev").onclick = () => { if (cur > 0){ cur--; $("missAlert").hidden = true; renderQ(); } };
+$("btnNext").onclick = () => { if (cur < 27){ cur++; renderQ(); } else submit(); };
+$("btnRestart1").onclick = () => { $("confirmRestart1").hidden = false; };
+$("noRestart1").onclick = () => { $("confirmRestart1").hidden = true; };
+$("yesRestart1").onclick = () => { $("confirmRestart1").hidden = true; resetAll(); saveDraft(); renderQ(); };
+$("btnReview").onclick = () => { if (isSample){ isSample = false; show("vStart"); return; } cur = 0; show("vTest"); renderQ(); };
+$("btnRestart2").onclick = () => { $("confirmRestart2").hidden = false; };
+$("noRestart2").onclick = () => { $("confirmRestart2").hidden = true; };
+$("yesRestart2").onclick = () => { $("confirmRestart2").hidden = true; resetAll(); isSample = false; $("nameIn").value = ""; userName = ""; checkResume(); show("vStart"); };
+const inFrame = (() => { try { return window.self !== window.top; } catch(e){ return true; } })();
+$("btnPrint").onclick = () => {
+  if (inFrame){ $("printHint").hidden = false; return; }
+  window.print();
+};
+document.addEventListener("keydown", e => {
+  if ($("vTest").hidden) return;
+  if (e.key === "ArrowLeft" && cur > 0){ cur--; renderQ(); }
+  if (e.key === "ArrowRight" && isDone(answers[cur])){ if (cur < 27){ cur++; renderQ(); } }
+});
+function checkResume(){
+  const d = loadDraft(); const n = d ? d.answers.filter(isDone).length : 0;
+  $("btnResume").hidden = $("resumeBox").hidden = !(n > 0 && n < 28);
+  $("resumeCount").textContent = n;
+}
+checkResume();
+</script>
+
+</body>
+</html>
