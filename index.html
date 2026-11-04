@@ -271,6 +271,7 @@ details[open]>summary{margin-bottom:10px}
 #report .two{display:flex;gap:14px}
 #report .two>div{flex:1;min-width:0}
 #report .two svg{width:100%;height:auto}
+#report .steps6 ul{margin:2px 0}#report .steps6 .who{font-weight:700;margin:4px 0 0}#report .steps6 .note{color:#5b6b72;font-size:11px}#report .steps6 p{margin:2px 0}
 #report .memo{white-space:pre-wrap;border:1px solid #c9d3cf;border-radius:6px;padding:6px 8px;min-height:30px}
 @media print{
   body{background:#fff;color:#000;font-size:12px}
@@ -655,6 +656,7 @@ function adjustPG(PG){
     sup?`팀 회의에서 1순위 [${f.k}] 관련 개선 과제 1가지를 정하고 담당자·기한 정하기`:`1순위 [${f.k}]와 관련해 관리감독자와 업무 조정·지원을 1회 이상 이야기하기`,
     `4주 뒤(${d28}) 같은 점검으로 변화를 돌아보기. 점수 변화는 참고용이며 성공·실패 기준이 아닙니다.`];
   const st=PG.steps.find(s=>s.stage==="목표 설정");if(st)st.html=`<ul class="goal">${PG.goals.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  const ev=PG.steps.find(s=>s.stage==="평가 및 피드백");if(ev)ev.html=`<p>${d28}에 같은 점검을 다시 하고, 고른 실천을 얼마나 했는지 돌아보세요. 점수 변화는 일의 상황에 따라서도 달라지므로 참고로만 보고, 잘 안 된 항목은 이유를 적어 다음 4주 계획에 반영합니다.</p>`;
   return PG}
 function kossResult(){syncS();const R=score();return{R,P:priorities(R.ds),PG:adjustPG(program(R))}}
 function discResult(){return scoreCounts(ST.dc)}
@@ -1280,6 +1282,7 @@ function buildReport(){
     <p class="h">4주 목표</p>${ul(PG.goals)}
     <p class="sub">표시 기준: [지침 근거] 공식 지침이 권고하는 방향 · [교육용 재구성] 지침 원칙을 바탕으로 프로그램이 만든 문구 · [자기성찰 참고] DISC 유형 연결, 효과 검증 안 됨</p>`);
   B.push(`<p class="h">주차별 실행계획 <span class="sub">[교육용 재구성] ${SRC.plan}</span></p><table class="t"><tbody>${PG.rows.map(x=>`<tr><th style="width:150px">${x[0]}</th><td>${esc(x[1])}<br><span class="sub">방법: ${esc(x[2])}</span></td></tr>`).join("")}</tbody></table>`);
+  B.push(`<p class="h">예방 프로그램 6단계 <span class="sub">[교육용 재구성] ${SRC.plan}</span></p><table class="t steps6"><tbody>${PG.steps.map((s,i)=>`<tr><th style="width:150px">${i+1}. ${esc(s.stage)}<br><span class="sub">${esc(s.title)}</span></th><td>${s.stage==="목표 설정"?"<span class='sub'>위 '4주 목표'와 같습니다.</span>":s.stage==="세부 실행계획 수립"?"<span class='sub'>위 '주차별 실행계획'과 같습니다.</span>":s.html}</td></tr>`).join("")}</tbody></table>`);
   B.push(`<p class="h">조직 차원의 개선방안 (${sup?"관리감독자로서 팀에서 시작할 일":"관리감독자·회사에 요청할 일"}) <span class="sub">[지침 근거] ${SRC.org}</span></p>${PG.focus.map(d=>`<p style="margin-top:4px"><b>${d.k}</b></p>${ul(TIPS[d.k].org)}`).join("")}`);
   B.push(`<h2>STEP 4 · ${sup?"관리감독자로서 동료 이해하기":"동료와 서로 이해하기"}</h2>
     <table class="t"><thead><tr><th>유형</th><th>스트레스 받을 때 보일 수 있는 모습</th><th>이 유형과 대화할 때</th></tr></thead><tbody>${TYPES.map(t=>`<tr><th style="width:90px;color:${LIGHT["--"+t.toLowerCase()]}">${t} ${TYPE_NAME[t]}${r.primary.includes(t)?"<br><span class='sub'>나의 유형</span>":""}</th><td>${INFO[t].stress.join("<br>")}</td><td>${stripLead(INFO[t].comm[1])}</td></tr>`).join("")}</tbody></table>
@@ -1331,6 +1334,16 @@ const pdfSection=()=>`<section class="card noprint">
     <div class="row"><button class="btn" type="button" id="pdf">PDF 다운로드</button></div>
     <p class="small muted" id="pdfMsg" role="status" hidden></p>
   </section>`;
+function saveAlt(blob,url,name,samsung){
+  const msg=$("pdfMsg");let box=$("pdfAlt");if(box)box.remove();
+  box=document.createElement("div");box.id="pdfAlt";box.className="row noprint";
+  let file=null;try{file=new File([blob],name,{type:"application/pdf"})}catch(e){}
+  const canShare=!!(file&&navigator.canShare&&navigator.canShare({files:[file]}));
+  box.innerHTML=`${canShare?`<button class="btn" type="button" id="pdfShare">파일로 저장·공유</button>`:""}<a class="btn ${canShare?"ghost":""}" id="pdfOpen" href="${url}" target="_blank" rel="noopener">PDF 열기</a>`;
+  msg.textContent=samsung?"PDF가 준비됐어요. '파일로 저장·공유'를 눌러 내 파일에 저장하거나, 'PDF 열기'로 연 뒤 저장해 주세요.":"PDF를 내려받았습니다. 다운로드 폴더(휴대폰은 '파일' 앱)를 확인해 주세요. 받아지지 않았다면 아래 버튼을 눌러 주세요.";
+  msg.hidden=false;msg.after(box);
+  const sh=$("pdfShare");if(sh)sh.addEventListener("click",()=>{navigator.share({files:[file],title:"직무스트레스 4단계 점검 결과"}).catch(e=>{if(!e||e.name!=="AbortError"){msg.textContent="공유 창을 열지 못했어요. 'PDF 열기'를 눌러 주세요."}})});
+}
 function wirePdf(){
   const btn=$("pdf");if(!btn)return;const msg=$("pdfMsg");
   const show=t=>{msg.textContent=t;msg.hidden=false};
@@ -1345,7 +1358,12 @@ function wirePdf(){
     try{
       const pdf=await makePdf();
       if(dl){await dl.save({filename:fn,data:pdf.output("blob")});show("PDF를 저장했습니다.")}
-      else{const url=URL.createObjectURL(pdf.output("blob"));const a=document.createElement("a");a.href=url;a.download=`stress-check-result_${ST.date||todayKST()}.pdf`; /* 일부 브라우저가 한글 파일명을 지우므로 영문 */document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);show("PDF를 내려받았습니다. 다운로드 폴더(휴대폰은 '파일' 앱)를 확인해 주세요.")}
+      else{const blob=pdf.output("blob");const name=`stress-check-result_${ST.date||todayKST()}.pdf`; /* 일부 브라우저가 한글 파일명을 지우므로 영문 */
+        const url=URL.createObjectURL(blob);setTimeout(()=>URL.revokeObjectURL(url),600000);
+        /* 삼성 인터넷은 blob 다운로드를 막는 경우가 있어 자동 다운로드 대신 공유·열기 버튼을 바로 보여 줌 */
+        const samsung=/SamsungBrowser/i.test(navigator.userAgent);
+        if(!samsung){const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove()}
+        saveAlt(blob,url,name,samsung)}
     }catch(e){
       $("report").innerHTML="";
       const c=e&&e.code;
