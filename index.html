@@ -94,6 +94,7 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-align:c
 .evlegend{display:grid;gap:6px;font-size:.86rem;margin:0;padding:0;list-style:none}
 .evlegend li{display:flex;gap:8px;align-items:baseline}
 .evlegend .ev{margin-left:0;flex:none}
+.sel{font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;min-height:48px;padding:8px 12px;width:100%;box-sizing:border-box;margin:4px 0 10px}
 .chg-up{color:var(--warn);font-weight:700}
 .chg-dn{color:var(--ok);font-weight:700}
 .legend .old{background:none;border:2px dashed var(--muted)}
@@ -320,7 +321,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 function todayKST(){return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}
 function addDays(iso,n){const[y,m,d]=iso.split("-").map(Number);const t=new Date(Date.UTC(y,m-1,d+n));return t.getUTCFullYear()+"-"+String(t.getUTCMonth()+1).padStart(2,"0")+"-"+String(t.getUTCDate()).padStart(2,"0")}
 function fmtD(iso){const[y,m,d]=iso.split("-").map(Number);const w="일월화수목금토"[new Date(Date.UTC(y,m-1,d)).getUTCDay()];return m+"/"+d+"("+w+")"}
-function fresh(){return{view:"home",gender:"",role:"",date:todayKST(),kAns:Array(26).fill(0),kPage:1,dc:{most:{D:"",I:"",S:"",C:"",N:""},least:{D:"",I:"",S:"",C:"",N:""}},picks:[],memo:["","",""],peer:"",sample:false,base:null}}
+function fresh(){return{view:"home",gender:"",role:"",date:todayKST(),kAns:Array(26).fill(0),kPage:1,dc:{most:{D:"",I:"",S:"",C:"",N:""},least:{D:"",I:"",S:"",C:"",N:""}},picks:[],memo:["","",""],peer:"",sit:"",react:"",sample:false,base:null}}
 let ST=fresh();
 try{const s=JSON.parse(sessionStorage.getItem(KEY)||"null");if(s&&Array.isArray(s.kAns)&&s.kAns.length===26&&s.dc&&s.dc.most&&s.dc.least)ST=Object.assign(fresh(),s)}catch(e){}
 /* 화면을 닫아도 다음 단계로 이어지도록 KOSS·DISC 응답을 이 기기에 보관 */
@@ -1046,9 +1047,16 @@ function renderDiscResult(){
 }
 
 /* ---------------- STEP 3 · 관리방법 ---------------- */
+/* [2026-11-04] 교육생이 실제 상황과 반응을 직접 고름 (DISC로 반응을 단정하지 않기 위해). 상황→KOSS 영역 연결, 반응별 제안은 교육용 재구성 */
+const SITS=[["업무량이 많고 마감시간이 촉박할 때","직무요구"],["동료나 상사와 갈등이 생길 때","관계갈등"],["갑작스럽게 업무나 작업계획이 변경될 때","직장문화"],["업무 지시나 기준이 불명확할 때","직장문화"],["필요한 인력·장비·지원이 부족할 때","조직체계"],["고용·근무조건이 불안정할 때","직무불안정"],["노력에 대한 인정이나 피드백이 부족할 때","보상부적절"],["안전하지 않거나 불편한 작업환경에 놓일 때","물리적환경"]];
+const REACTS=[["급하게 처리하거나 확인을 생략한다","작업을 시작하기 전 잠시 멈춰 작업조건과 위험요인을 확인하고 우선순위를 정하기"],["말이 많아지거나 감정적으로 반응한다","감정이 올라오면 바로 말하기보다 사실과 요구사항을 나눠서 전달하기"],["불편해도 말하지 않고 혼자 참는다","말하기 어려운 문제를 짧은 문장으로 정리해 믿을 수 있는 사람에게 도움 요청하기"],["세부사항을 반복 확인하며 결정을 미룬다","꼭 확인할 핵심 기준을 정하고, 결정할 시점을 미리 합의하기"],["동료에게 도움을 요청한다","도움을 요청했던 경험을 바탕으로 필요한 지원을 더 구체적으로 말하기"],["기타 또는 상황에 따라 다르다","지금 상황에서 나에게 도움이 되는 안전한 대응을 하나 골라 보기"]];
+const SRC_REACT="안전행동·의사소통의 일반 원칙을 바탕으로 한 교육용 재구성 · NICE NG212 1.6.3(믿을 만한 사람과 이야기)";
 const BASICS=["수면·휴식 시간을 먼저 확보하기","1분 호흡: 어깨 힘을 빼고 편하게 들이쉰 뒤 조금 더 천천히 내쉬기","50분 일하면 5분 일어나 목·어깨 스트레칭하기","할 일을 긴급도·중요도로 나눠 3가지만 고르기","힘들 때 동료·상사·전문기관에 도움 요청하기"];
 function candidates(focus,primary){
   const list=[];
+  if(ST.react!=="")list.push({tag:"내가 고른 반응",t:REACTS[+ST.react][1],ev:"r",src:SRC_REACT});
+  const sd=ST.sit!==""?SITS[+ST.sit][1]:null;
+  if(sd){const fd=focus.find(d=>d.k===sd)||{k:sd};focus=[fd,...focus.filter(d=>d.k!==sd)]}
   focus.forEach(d=>TIPS[d.k].me.forEach(t=>list.push({tag:"일터 요인 · "+d.k,t,ev:"r",src:SRC_DOM[d.k]||SRC.domain})));
   primary.forEach(p=>INFO[p].manage.forEach(t=>list.push({tag:"내 유형 · "+p+"형 (참고)",t,ev:"s",src:SRC.disc})));
   BASICS.forEach(t=>list.push({tag:"기본 회복 습관",t,ev:"r",src:SRC.basic}));
@@ -1067,9 +1075,18 @@ function renderStep3(){
     <div class="map">
       <div><span class="kicker">STEP 1 · 부담을 주는 일터 요인</span>${focus.map(d=>`<p><b>${d.k}</b> <span class="pill ${d.lv}">${LV[d.lv]}</span></p>`).join("")}</div>
       <div class="x" aria-hidden="true">×</div>
-      <div><span class="kicker">STEP 2 · 나의 반응 경향</span>${prim.map(t=>`<p><b style="color:${TYPE_COLOR(t)}">${t}형 · ${TYPE_NAME[t]}</b></p><ul class="small">${INFO[t].stress.map(x=>`<li>${x}</li>`).join("")}</ul>`).join("")}</div>
+      <div><span class="kicker">STEP 2 · DISC로 본 반응 경향 (참고)</span>${prim.map(t=>`<p><b style="color:${TYPE_COLOR(t)}">${t}형 · ${TYPE_NAME[t]}</b></p><ul class="small">${INFO[t].stress.map(x=>`<li>${x}</li>`).join("")}</ul>`).join("")}</div>
     </div>
-    <p class="small muted">위의 반응 신호가 보이면 "지금 스트레스가 쌓이고 있구나" 하고 알아차리는 것이 관리의 시작입니다. 유형별 반응은 참고용이니, 실제로 내가 보이는 반응을 먼저 떠올려 보세요.</p>
+    <p class="small muted">위의 반응 신호가 보이면 "지금 스트레스가 쌓이고 있구나" 하고 알아차리는 것이 관리의 시작입니다. 유형별 반응은 참고용이니, 아래에서 실제로 내가 보이는 반응을 직접 골라 보세요.</p>
+  </section>
+  <section class="card" id="sitCard">
+    <h2>나의 실제 상황과 반응 고르기</h2>
+    <p class="small muted">유형이 아니라 내가 실제로 겪는 상황과 반응에서 출발합니다. 고르면 아래 추천에 바로 반영돼요.</p>
+    <label class="who" for="sit">① 스트레스를 가장 많이 받는 상황</label>
+    <select class="sel" id="sit"><option value="">선택해 주세요</option>${SITS.map((s,i)=>`<option value="${i}" ${ST.sit===String(i)?"selected":""}>${s[0]}</option>`).join("")}</select>
+    <label class="who" for="react">② 그 상황에서 실제 나의 반응</label>
+    <select class="sel" id="react"><option value="">선택해 주세요</option>${REACTS.map((s,i)=>`<option value="${i}" ${ST.react===String(i)?"selected":""}>${s[0]}</option>`).join("")}</select>
+    ${ST.sit!==""||ST.react!==""?`<div class="loaded">${ST.sit!==""?`상황: <b>${SITS[+ST.sit][0]}</b> → 관련 일터 요인 <b>${SITS[+ST.sit][1]}</b>${(()=>{const d=R.ds.find(x=>x.k===SITS[+ST.sit][1]);return d?` (내 점수 ${f1(d.v)}점 · ${LV[d.lv]})`:""})()}<br>`:""}${ST.react!==""?`나의 반응: <b>${REACTS[+ST.react][0]}</b><br>실천 제안: ${REACTS[+ST.react][1]} ${evB("r")}`:""}</div>`:""}
   </section>
   <section class="card">
     <h2>내용 옆 표시 읽는 법</h2>
@@ -1097,7 +1114,7 @@ function renderStep3(){
     <h2>조직 차원의 개선방안 ${evB("g")}</h2>
     <span class="evsrc">근거: ${SRC.org}</span>
     <p class="small muted">개인의 노력만으로 해결되지 않는 부분입니다. ${sup?"관리감독자로서 팀에서 먼저 시작할 수 있는 일입니다.":"관리감독자·회사에 요청할 수 있는 일입니다."}</p>
-    ${focus.map(d=>`<div><p class="who">${d.k} <span class="pill ${d.lv}">${LV[d.lv]}</span></p><ul>${TIPS[d.k].org.map(t=>`<li>${t}</li>`).join("")}</ul></div>`).join("")}
+    ${(ST.sit!==""?[R.ds.find(x=>x.k===SITS[+ST.sit][1]),...focus.filter(d=>d.k!==SITS[+ST.sit][1])]:focus).map(d=>`<div><p class="who">${d.k} <span class="pill ${d.lv}">${LV[d.lv]}</span></p><ul>${TIPS[d.k].org.map(t=>`<li>${t}</li>`).join("")}</ul></div>`).join("")}
     <p class="disclaim">건강한 생활습관이 과도한 업무량이나 부당한 대우를 대신 해결해 주지는 않습니다. 개인적 방법이 일터의 스트레스 요인을 줄이는 노력을 대신해서는 안 됩니다(NICE NG212 1.6.1).</p>
   </section>
   <section class="card">
@@ -1117,6 +1134,7 @@ function renderStep3(){
     else ST.picks=ST.picks.filter(x=>x!==t);
     c.closest(".chk").classList.toggle("on",c.checked);save();paintCard();$("pickCount").textContent=ST.picks.length;if(c.checked)toast("실천 카드에 담았어요 ("+ST.picks.length+"/3)");
   }));
+  ["sit","react"].forEach(id=>$(id).addEventListener("change",e=>{ST[id]=e.target.value;save();const y=window.scrollY;render();window.scrollTo(0,y)}));
   wirePdf();
   $("back").addEventListener("click",()=>go("s2r"));
   $("next").addEventListener("click",()=>go("s4"));
@@ -1205,6 +1223,7 @@ function renderStep4(){
       `STEP 1 ${K.instrument.code}: 총점 ${f1(K.total.v)}점 (${LV[K.total.lv]})`,
       `  고위험: ${K.high_factors.join(", ")||"없음"} / 경계: ${K.watch_factors.join(", ")||"없음"}`,
       `STEP 2 DISC: ${rr.primary.join("·")}${rr.primary.length>1?" 복합형":"형"} (${rr.primary.map(t=>TYPE_NAME[t]).join("+")}) · 차이점수 D${sign(rr.diff.D)} I${sign(rr.diff.I)} S${sign(rr.diff.S)} C${sign(rr.diff.C)}`,
+      ...(ST.sit!==""||ST.react!==""?[`STEP 3 나의 상황·반응: ${ST.sit!==""?SITS[+ST.sit][0]:"-"} / ${ST.react!==""?REACTS[+ST.react][0]:"-"}`]:[]),
       `STEP 3 나의 실천: ${ST.picks.length?ST.picks.join(" / "):"(아직 고르지 않음)"}`,
       `  4주 뒤 재점검: ${addDays(ST.date,28)} · 결과 코드 ${curCode()}`,
       `STEP 4 내일부터 바꿀 한 가지: 신호-${ST.memo[0]||"-"} / 작업조건-${ST.memo[1]||"-"} / 조치-${ST.memo[2]||"-"}`];
@@ -1255,6 +1274,7 @@ function buildReport(){
     <table class="t c"><thead><tr><th>유형</th><th>최고</th><th>최소</th><th>차이점수</th><th>단계</th></tr></thead><tbody>${TYPES.map(t=>`<tr><td class="l"><b>${t}</b> ${TYPE_NAME[t]}</td><td>${r.most[t]}</td><td>${r.least[t]}</td><td><b>${sign(r.diff[t])}</b></td><td><b>${r.stage[t]}</b></td></tr>`).join("")}</tbody></table>
     <p class="sub">DISC 결과는 성격 진단이 아니라 현재의 행동 경향을 이해하기 위한 자기이해 자료입니다.</p>`);
   B.push(`<h2>STEP 3 · 나에게 맞는 스트레스 관리방법</h2>
+    ${ST.sit!==""||ST.react!==""?`<p class="h">나의 실제 상황과 반응</p><table class="t"><tbody>${ST.sit!==""?`<tr><th style="width:150px">스트레스 상황</th><td>${SITS[+ST.sit][0]} <span class="sub">(관련 요인: ${SITS[+ST.sit][1]})</span></td></tr>`:""}${ST.react!==""?`<tr><th>실제 나의 반응</th><td>${REACTS[+ST.react][0]}</td></tr><tr><th>실천 제안</th><td>${REACTS[+ST.react][1]} <span class="sub">[교육용 재구성]</span></td></tr>`:""}</tbody></table>`:""}
     <p class="h">나의 실천 카드</p>${ST.picks.length?`<ol>${ST.picks.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>`:"<p class='sub'>선택한 항목이 없습니다.</p>"}
     <p class="h">내 유형에 맞는 관리방법 <span class="sub">[자기성찰 참고 · 유형별 효과 검증 안 됨]</span></p>${ul([].concat(...r.primary.map(t=>INFO[t].manage)))}
     <p class="h">4주 목표</p>${ul(PG.goals)}
